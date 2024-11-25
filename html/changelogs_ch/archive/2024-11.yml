@@ -88,6 +88,7 @@
       over it whilst carrying an illegal item
   - qol: removed the redundant name/desc customize proc from the plain choker (just
       use name/desc gear tweaks instead)
+<<<<<<< HEAD
 2024-11-12:
   Kashargul:
   - maptweak: fixes the sleep areas on SN to use the global defines
@@ -137,3 +138,5 @@
 2024-11-23:
   Raeschen:
   - refactor: min account age for head roles --> 31 days
+=======
+>>>>>>> 503333486715086b99485dae8d25a3c51036b78a
