@@ -81,3 +81,59 @@
 2024-11-10:
   CHOMPStation2StaffMirrorBot:
   - qol: restored syndie headset sprites
+2024-11-11:
+  CHOMPStation2StaffMirrorBot:
+  - rscadd: added lockpicks, for opening simple_doors
+  - rscadd: added contraband scanner machine, which can sound an alarm if you walk
+      over it whilst carrying an illegal item
+  - qol: removed the redundant name/desc customize proc from the plain choker (just
+      use name/desc gear tweaks instead)
+2024-11-12:
+  Kashargul:
+  - maptweak: fixes the sleep areas on SN to use the global defines
+  TomTyph:
+  - rscadd: Angel Halo hat in headgear loadout
+2024-11-15:
+  CHOMPStation2StaffMirrorBot:
+  - bugfix: adds missing arguments to recursive_content_check()
+2024-11-16:
+  FluffMedic:
+  - rscadd: Added and altered some things on Tyr
+  tacoguy7765093:
+  - maptweak: Switched maps from Soluna Nexus to Southern Cross
+2024-11-18:
+  CHOMPStation2StaffMirrorBot:
+  - rscadd: added "salvage technician" alt title for engineer
+2024-11-20:
+  CHOMPStation2StaffMirrorBot:
+  - qol: climbing and swimming traits can now modify your speed of climbing and swimming
+      between z-levels, in addition to their standard functions
+  - rscadd: added "pro swimmer" trait, which increases your movespeed in water and
+      reduces time to traverse between water z-levels when swimming
+  - qol: akula now have 50% reduced z-swim time, as if they had the pro-swimmer trait
+  - qol: tajara and vasilissans now have 25% reduced ladder/climbing time, as if they
+      had the amateur climber trait
+  - qol: refactored rings, knuckledusters, bracelets, and watches into glove-attached
+      accessories (they can still be worn by themselves!)
+  - qol: bracelets are now worn on your hands/wrists rather than being in the neck
+      slot
+  Fracshun:
+  - qol: OOC Escape now works for most Mind Binder and Body Snatcher interactions
+2024-11-21:
+  Fracshun:
+  - rscadd: Mind binded monkey/mob cubes gain control of the rehydrated mob
+  - rscadd: Monkey/mob cubes when eaten can vore the rehydrated mob if spont pred
+      and food vore are enabled
+  - rscadd: Mind binded cigs/cigars correctly turn into cig butts when burnt out or
+      used in an ashtray
+2024-11-22:
+  CHOMPStation2:
+  - bugfix: Lighting is slightly faster to calculate
+  Hunter-Dovetail:
+  - rscadd: crocodile_upperjaw-head
+  - rscadd: VBO_maw26
+  - bugfix: hippo_head-head
+  - bugfix: trex_upperjaw-head
+2024-11-23:
+  Raeschen:
+  - refactor: min account age for head roles --> 31 days
