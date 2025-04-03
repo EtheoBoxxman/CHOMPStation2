@@ -1,6 +1,3 @@
-/datum/category_item/catalogue/information/organization/solgov
-	name = "Government - Commonwealth of Sol-Procyon"
-
 //TODO: VIRGO_LORE_WRITING_WIP - this whole file
 //CHOMPedits: basically every "desc" variable in this file.
 
@@ -126,9 +123,3 @@
 	into a dormant brain via direct electro-uploading. The technology remains imperfect and \
 	non-zero error margins exist. Handle with care! Or don't. Stress testing this stuff makes a lucrative market." //CHOMPedit
 	value = CATALOGUER_REWARD_TRIVIAL
-
-/*
-/datum/category_item/catalogue/information/organization/khi
-	name = "Independents - Kitsuhana Heavy Industries"
-	datum_to_copy = /datum/lore/organization/other/kitsuhana
-*/

@@ -89,6 +89,9 @@ function removeStatusTab(name) {
 			verb_tabs.splice(i, 1);
 		}
 	}
+	if(current_tab == name) {
+		tab_change("Status");
+	}
 	menu.removeChild(document.getElementById(name));
 	TakeTabFromByond(name);
 }
@@ -283,7 +286,19 @@ function draw_examine() {
 	var div_content = document.createElement("div");
 	for (var i = 0; i < examine.length; i++) {
 		var parameter = document.createElement('p');
-		parameter.innerHTML = examine[i];
+		var textList = examine[i].split("||");
+		if(textList.length > 1) {
+			for(var j = 0; j < textList.length; j++) {
+				var spoilerText = document.createElement('span');
+				if(j % 2) {
+					spoilerText.className = "spoiler";
+				}
+				spoilerText.innerHTML = textList[j];
+				parameter.appendChild(spoilerText);
+			}
+		} else {
+			parameter.innerHTML = examine[i];
+		}
 		div_content.appendChild(parameter);
 	}
 	var images = div_content.querySelectorAll("img");
@@ -397,7 +412,7 @@ function draw_mc() {
 		var td2 = document.createElement("td");
 		if (part[2]) {
 			var a = document.createElement("a");
-			a.href = "?_src_=vars;admin_token=" + href_token + ";Vars=" + part[2];
+			a.href = "byond://?_src_=vars;admin_token=" + href_token + ";Vars=" + part[2];
 			a.textContent = part[1];
 			td2.appendChild(a);
 		} else {
@@ -467,34 +482,33 @@ function draw_listedturf() {
 			table.appendChild(img);
 		}
 		var b = document.createElement("div");
-		var clickcatcher = "";
 		b.className = "link";
 		b.onmousedown = function (part) {
 			// The outer function is used to close over a fresh "part" variable,
 			// rather than every onmousedown getting the "part" of the last entry.
 			return function (e) {
 				e.preventDefault();
-				clickcatcher = "?src=" + part[1];
+				var params = {"src": part[1]};
 				switch (e.button) {
 					case 1:
-						clickcatcher += ";statpanel_item_click=middle";
+						params["statpanel_item_click"] = "middle";
 						break;
 					case 2:
-						clickcatcher += ";statpanel_item_click=right";
+						params["statpanel_item_click"] = "right";
 						break;
 					default:
-						clickcatcher += ";statpanel_item_click=left";
+						params["statpanel_item_click"] = "left";
 				}
 				if (e.shiftKey) {
-					clickcatcher += ";statpanel_item_shiftclick=1";
+					params["statpanel_item_shiftclick"] = 1;
 				}
 				if (e.ctrlKey) {
-					clickcatcher += ";statpanel_item_ctrlclick=1";
+					params["statpanel_item_ctrlclick"] = 1;
 				}
 				if (e.altKey) {
-					clickcatcher += ";statpanel_item_altclick=1";
+					params["statpanel_item_altclick"] = 1;
 				}
-				window.location.href = clickcatcher;
+				Byond.topic(params)
 			}
 		}(part);
 		b.textContent = part[0];
@@ -530,7 +544,7 @@ function draw_sdql2() {
 		var td2 = document.createElement("td");
 		if (part[2]) {
 			var a = document.createElement("a");
-			a.href = "?src=" + part[2] + ";statpanel_item_click=left";
+			a.href = "byond://?src=" + part[2] + ";statpanel_item_click=left";
 			a.textContent = part[1];
 			td2.appendChild(a);
 		} else {
@@ -557,12 +571,12 @@ function draw_tickets() {
 		var td2 = document.createElement("td");
 		if (part[2]) {
 			var a = document.createElement("a");
-			a.href = "?_src_=holder;admin_token=" + href_token + ";ahelp=" + part[2] + ";ahelp_action=ticket;statpanel_item_click=left;action=ticket";
+			a.href = "byond://?_src_=holder;admin_token=" + href_token + ";ahelp=" + part[2] + ";ahelp_action=ticket;statpanel_item_click=left;action=ticket";
 			a.textContent = part[1];
 			td2.appendChild(a);
 		} else if (part[3]) {
 			var a = document.createElement("a");
-			a.href = "?src=" + part[3] + ";statpanel_item_click=left";
+			a.href = "byond://?src=" + part[3] + ";statpanel_item_click=left";
 			a.textContent = part[1];
 			td2.appendChild(a);
 		} else {
@@ -610,7 +624,6 @@ function draw_misc(tab) {
 		}
 		var td3 = null;
 		var b = document.createElement("div");
-		var clickcatcher = "";
 		if (part[4]) {
 			b.className = "linkelem";
 			b.onmousedown = function (part) {
@@ -618,27 +631,27 @@ function draw_misc(tab) {
 				// rather than every onmousedown getting the "part" of the last entry.
 				return function (e) {
 					e.preventDefault();
-					clickcatcher = "?src=" + part[4];
+					var params = { "src": part[4] };
 					switch (e.button) {
 						case 1:
-							clickcatcher += ";statpanel_item_click=middle";
+							params["statpanel_item_click"] = "middle";
 							break;
 						case 2:
-							clickcatcher += ";statpanel_item_click=right";
+							params["statpanel_item_click"] = "right";
 							break;
 						default:
-							clickcatcher += ";statpanel_item_click=left";
+							params["statpanel_item_click"] = "left";
 					}
 					if (e.shiftKey) {
-						clickcatcher += ";statpanel_item_shiftclick=1";
+						params["statpanel_item_shiftclick"] = 1;
 					}
 					if (e.ctrlKey) {
-						clickcatcher += ";statpanel_item_ctrlclick=1";
+						params["statpanel_item_ctrlclick"] = 1;
 					}
 					if (e.altKey) {
-						clickcatcher += ";statpanel_item_altclick=1";
+						params["statpanel_item_altclick"] = 1;
 					}
-					window.location.href = clickcatcher;
+					Byond.topic(params);
 				}
 			}(part);
 		}
@@ -681,7 +694,7 @@ function draw_spells(cat) {
 		var td2 = document.createElement("td");
 		if (part[3]) {
 			var a = document.createElement("a");
-			a.href = "?src=" + part[3] + ";statpanel_item_click=left";
+			a.href = "byond://?src=" + part[3] + ";statpanel_item_click=left";
 			a.textContent = part[2];
 			td2.appendChild(a);
 		} else {
@@ -1053,8 +1066,8 @@ Byond.subscribeTo('add_admin_tabs', function (ht) {
 	addPermanentTab("Tickets");
 });
 
-Byond.subscribeTo('update_examine', function (S) {
-	examine = S;
+Byond.subscribeTo('update_examine', function (payload) {
+	examine = payload.EX;
 	if (examine.length > 0 && !verb_tabs.includes("Examine")) {
 		verb_tabs.push("Examine");
 		addPermanentTab("Examine")
@@ -1062,7 +1075,9 @@ Byond.subscribeTo('update_examine', function (S) {
 	if (current_tab == "Examine") {
 		draw_examine();
 	}
-	//tab_change("Examine"); //This is handled by DM code and a pref setting already
+	if(payload.UPD) {
+		tab_change("Examine");
+	}
 })
 
 Byond.subscribeTo('update_sdql2', function (S) {

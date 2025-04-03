@@ -578,6 +578,9 @@ var/global/list/remainless_species = list(SPECIES_PROMETHEAN,
 		traits_costs[path] = cost
 		all_traits[path] = instance
 
+	// Traitgenes Initilize trait genes
+	setupgenetics(all_traits)
+
 	// Shakey shakey shake
 	sortTim(all_traits, GLOBAL_PROC_REF(cmp_trait_datums_name), associative = TRUE)
 
@@ -585,19 +588,20 @@ var/global/list/remainless_species = list(SPECIES_PROMETHEAN,
 	for(var/traitpath in all_traits)
 		var/datum/trait/T = all_traits[traitpath]
 		var/category = T.category
-		switch(category)
-			if(-INFINITY to -0.1)
-				negative_traits[traitpath] = T
-				if(!(T.custom_only))
-					everyone_traits_negative[traitpath] = T
-			if(0)
-				neutral_traits[traitpath] = T
-				if(!(T.custom_only))
-					everyone_traits_neutral[traitpath] = T
-			if(0.1 to INFINITY)
-				positive_traits[traitpath] = T
-				if(!(T.custom_only))
-					everyone_traits_positive[traitpath] = T
+		if(!T.hidden) // Traitgenes forbid hidden traits from showing, done to hide genetics only traits
+			switch(category)
+				if(-INFINITY to -0.1)
+					negative_traits[traitpath] = T
+					if(!(T.custom_only))
+						everyone_traits_negative[traitpath] = T
+				if(0)
+					neutral_traits[traitpath] = T
+					if(!(T.custom_only))
+						everyone_traits_neutral[traitpath] = T
+				if(0.1 to INFINITY)
+					positive_traits[traitpath] = T
+					if(!(T.custom_only))
+						everyone_traits_positive[traitpath] = T
 
 
 	// Weaver recipe stuff
@@ -876,11 +880,11 @@ var/global/list/xenobio_rainbow_extracts = list(
 var/global/list/event_wildlife_aquatic = list(
 										list(
 												list(/mob/living/simple_mob/animal/passive/fish/koi = 1,
-													 /mob/living/simple_mob/animal/passive/fish/pike = 2,
-													 /mob/living/simple_mob/animal/passive/fish/perch = 2,
-													 /mob/living/simple_mob/animal/passive/fish/salmon = 2,
-													 /mob/living/simple_mob/animal/passive/fish/trout = 2,
-													 /mob/living/simple_mob/animal/passive/fish/bass = 3),
+														/mob/living/simple_mob/animal/passive/fish/pike = 2,
+														/mob/living/simple_mob/animal/passive/fish/perch = 2,
+														/mob/living/simple_mob/animal/passive/fish/salmon = 2,
+														/mob/living/simple_mob/animal/passive/fish/trout = 2,
+														/mob/living/simple_mob/animal/passive/fish/bass = 3),
 												list(/mob/living/simple_mob/animal/passive/fish/salmon = 1),
 												list(/mob/living/simple_mob/animal/passive/fish/perch = 1),
 												list(/mob/living/simple_mob/animal/passive/fish/trout = 1),
@@ -892,11 +896,11 @@ var/global/list/event_wildlife_aquatic = list(
 												list(/mob/living/simple_mob/animal/sif/duck = 1),
 												list(/mob/living/simple_mob/animal/passive/fish/measelshark = 1),
 												list(/mob/living/simple_mob/vore/pakkun = 5,
-													 /mob/living/simple_mob/vore/pakkun/snapdragon = 1)
+														/mob/living/simple_mob/vore/pakkun/snapdragon = 1)
 											),
 										list(
 												list(/mob/living/simple_mob/animal/space/goose = 10,
-													 /mob/living/simple_mob/animal/space/goose/white = 1),
+														/mob/living/simple_mob/animal/space/goose/white = 1),
 												list(/mob/living/simple_mob/vore/alienanimals/space_jellyfish = 1)
 											),
 										list(
@@ -907,38 +911,38 @@ var/global/list/event_wildlife_aquatic = list(
 var/global/list/event_wildlife_roaming = list(
 										list(
 												list(/mob/living/simple_mob/animal/passive/mouse/jerboa = 1,
-													 /mob/living/simple_mob/animal/passive/mouse/black = 2,
-													 /mob/living/simple_mob/animal/passive/mouse/brown = 2,
-													 /mob/living/simple_mob/animal/passive/mouse/gray = 2,
-													 /mob/living/simple_mob/animal/passive/mouse/white = 2,
-													 /mob/living/simple_mob/animal/passive/mouse/rat = 3),
+														/mob/living/simple_mob/animal/passive/mouse/black = 2,
+														/mob/living/simple_mob/animal/passive/mouse/brown = 2,
+														/mob/living/simple_mob/animal/passive/mouse/gray = 2,
+														/mob/living/simple_mob/animal/passive/mouse/white = 2,
+														/mob/living/simple_mob/animal/passive/mouse/rat/strong = 3), // CHOMPEdit
 												list(/mob/living/simple_mob/animal/passive/bird/black_bird = 1,
-													 /mob/living/simple_mob/animal/passive/bird/azure_tit = 1,
-													 /mob/living/simple_mob/animal/passive/bird/european_robin = 1,
-													 /mob/living/simple_mob/animal/passive/bird/goldcrest = 1,
-													 /mob/living/simple_mob/animal/passive/bird/ringneck_dove = 1),
+														/mob/living/simple_mob/animal/passive/bird/azure_tit = 1,
+														/mob/living/simple_mob/animal/passive/bird/european_robin = 1,
+														/mob/living/simple_mob/animal/passive/bird/goldcrest = 1,
+														/mob/living/simple_mob/animal/passive/bird/ringneck_dove = 1),
 												list(/mob/living/simple_mob/animal/passive/dog/corgi = 4,
-													 /mob/living/simple_mob/animal/passive/dog/corgi/puppy = 1),
+														/mob/living/simple_mob/animal/passive/dog/corgi/puppy = 1),
 												list(/mob/living/simple_mob/vore/rabbit = 1),
 												list(/mob/living/simple_mob/vore/redpanda = 14,
-													 /mob/living/simple_mob/vore/redpanda/fae = 7,
-													 /mob/living/simple_mob/vore/redpanda/blue = 1),
+														/mob/living/simple_mob/vore/redpanda/fae = 7,
+														/mob/living/simple_mob/vore/redpanda/blue = 1),
 												list(/mob/living/simple_mob/animal/passive/cow = 1),
 												list(/mob/living/simple_mob/animal/passive/chicken = 4,
-													 /mob/living/simple_mob/animal/passive/chick = 1),
+														/mob/living/simple_mob/animal/passive/chick = 1),
 												list(/mob/living/simple_mob/animal/passive/snake = 2,
-													 /mob/living/simple_mob/animal/passive/snake/red = 1,
-													 /mob/living/simple_mob/animal/passive/snake/python = 1)
+														/mob/living/simple_mob/animal/passive/snake/red = 1,
+														/mob/living/simple_mob/animal/passive/snake/python = 1)
 											),
 										list(
 												list(/mob/living/simple_mob/vore/horse/big = 7,
-													 /mob/living/simple_mob/vore/horse = 2),
+														/mob/living/simple_mob/vore/horse = 2),
 												list(/mob/living/simple_mob/vore/fennix = 1,
-													 /mob/living/simple_mob/vore/fennec = 4),
+														/mob/living/simple_mob/vore/fennec = 4),
 												list(/mob/living/simple_mob/vore/bee = 1),
 												list(/mob/living/simple_mob/animal/passive/fox = 1),
 												list(/mob/living/simple_mob/vore/sheep = 3,
-													 /mob/living/simple_mob/animal/goat = 1),
+														/mob/living/simple_mob/animal/goat = 1),
 												list(/mob/living/simple_mob/vore/hippo = 1),
 												list(/mob/living/simple_mob/vore/alienanimals/dustjumper = 1),
 												list(/mob/living/simple_mob/vore/alienanimals/teppi = 1)
@@ -1069,7 +1073,7 @@ var/global/list/SPECIALS = list(
 	/area/submap/virgo2,
 	/area/submap/event,
 	/area/submap/casino_event,
-	/area/vr //CHOMPedit
+	/area/vr
 	// /area/derelict //commented out, all hail derelict-rebuilders!
 )
 

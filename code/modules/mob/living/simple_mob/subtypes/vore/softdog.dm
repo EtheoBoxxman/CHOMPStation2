@@ -54,8 +54,8 @@
 	say_list_type = /datum/say_list/softdog
 	swallowTime = 0.1 SECONDS
 
-/mob/living/simple_mob/vore/woof/New()
-	..()
+/mob/living/simple_mob/vore/woof/Initialize(mapload)
+	. = ..()
 
 	add_verb(src, /mob/living/proc/ventcrawl)
 	add_verb(src, /mob/living/proc/hide)
@@ -97,7 +97,9 @@
 /mob/living/simple_mob/vore/woof/init_vore()
 	if(!voremob_loaded)
 		return
-	.=..()
+	if(LAZYLEN(vore_organs))
+		return
+	. = ..()
 	var/obj/belly/B = vore_selected
 	B.name = "stomach"
 	B.desc = "You have found yourself pumping on down, down, down into this extremely soft dog. The slick touches of pulsing walls roll over you in greedy fashion as you're swallowed away, the flesh forms to your figure as in an instant the world is replaced by the hot squeeze of canine gullet. And in another moment a heavy GLLRMMPTCH seals you away, the dog tossing its head eagerly, the way forward stretching to accommodate your shape as you are greedily guzzled down. The wrinkled, doughy walls pulse against you in time to the creature's steady heartbeat. The sounds of the outside world muffled into obscure tones as the wet, grumbling rolls of this soft creature's gut hold you, churning you tightly such that no part of you is spared from these gastric affections."
@@ -273,7 +275,7 @@
 	var/killswitch = FALSE
 
 
-/mob/living/simple_mob/vore/woof/hostile/aweful/Initialize()
+/mob/living/simple_mob/vore/woof/hostile/aweful/Initialize(mapload)
 	. = ..()
 	var/thismany = (rand(25,500)) / 100
 	resize(thismany, animate = FALSE, uncapped = TRUE, ignore_prefs = TRUE)

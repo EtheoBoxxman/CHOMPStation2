@@ -1,6 +1,6 @@
 // Adminspawn only, do not let anyone get this.
 /datum/material/alienalloy
-	name = "alienalloy"
+	name = MAT_ALIENALLOY
 	display_name = "durable alloy"
 	stack_type = null
 	flags = MATERIAL_UNMELTABLE
@@ -11,6 +11,7 @@
 	hardness = 500
 	weight = 500
 	protectiveness = 80 // 80%
+	wiki_flag = WIKI_SPOILER
 
 /datum/material/alienalloy/elevatorium
 	name = "elevatorium"

@@ -118,10 +118,11 @@ var/global/list/runlevel_flags = list(RUNLEVEL_LOBBY, RUNLEVEL_SETUP, RUNLEVEL_G
 // The numbers just define the ordering, they are meaningless otherwise.
 #define INIT_ORDER_TITLE			99	//CHOMPEdit
 #define INIT_ORDER_SERVER_MAINT		93
+#define INIT_ORDER_ADMIN_VERBS 		84 // needs to be pretty high, admins can't do much without it
 #define INIT_ORDER_WEBHOOKS			50
-#define INIT_ORDER_DBCORE			41	//CHOMPEdit
-#define INIT_ORDER_SQLITE			40
-#define INIT_ORDER_GARBAGE			39
+#define INIT_ORDER_SQLITE			41
+#define INIT_ORDER_GARBAGE			40
+#define INIT_ORDER_DBCORE			39
 #define INIT_ORDER_MEDIA_TRACKS		38 // Gotta get that lobby music up, yo
 #define INIT_ORDER_INPUT			37
 #define INIT_ORDER_CHEMISTRY		35
@@ -156,17 +157,21 @@ var/global/list/runlevel_flags = list(RUNLEVEL_LOBBY, RUNLEVEL_SETUP, RUNLEVEL_G
 #define INIT_ORDER_SKYBOX			-30 //Visual only, irrelevant to gameplay, but needs to be late enough to have overmap populated fully
 #define INIT_ORDER_TICKER			-50
 #define INIT_ORDER_MAPRENAME		-60 //Initiating after Ticker to ensure everything is loaded and everything we rely on us working
+#define INIT_ORDER_WIKI				-61
 #define INIT_ORDER_STATPANELS		-98
 #define INIT_ORDER_CHAT				-100 //Should be last to ensure chat remains smooth during init.
 
 // Subsystem fire priority, from lowest to highest priority
 // If the subsystem isn't listed here it's either DEFAULT or PROCESS (if it's a processing subsystem child)
+#define FIRE_PRIORITY_ATC			1
+#define FIRE_PRIORITY_APPRECIATE	2
 #define FIRE_PRIORITY_PLAYERTIPS	5
 #define FIRE_PRIORITY_SHUTTLES		5
 #define FIRE_PRIORITY_SUPPLY		5
 #define FIRE_PRIORITY_NIGHTSHIFT	5
 #define FIRE_PRIORITY_PLANTS		5
 #define FIRE_PRIORITY_VIS			5
+#define FIRE_PRIORITY_MOTIONTRACKER 6
 #define FIRE_PRIORITY_ORBIT			7
 #define FIRE_PRIORITY_VOTE			8
 #define FIRE_PRIORITY_INSTRUMENTS	9
@@ -189,10 +194,11 @@ var/global/list/runlevel_flags = list(RUNLEVEL_LOBBY, RUNLEVEL_SETUP, RUNLEVEL_G
 #define FIRE_PRIORITY_PROJECTILES	150
 #define FIRE_PRIORITY_STATPANEL		390
 #define FIRE_PRIORITY_CHAT			400
+#define FIRE_PRIORITY_RUNECHAT		410
 #define FIRE_PRIORITY_OVERLAYS		500
 #define FIRE_PRIORITY_TIMER			700
-#define FIRE_PRIORITY_SPEECH_CONTROLLER 900 // CHOMPEdit
-#define FIRE_PRIORITY_DELAYED_VERBS 950 // CHOMPEdit
+#define FIRE_PRIORITY_SPEECH_CONTROLLER 900
+#define FIRE_PRIORITY_DELAYED_VERBS 950
 #define FIRE_PRIORITY_INPUT			1000 // This must always always be the max highest priority. Player input must never be lost.
 
 /**
@@ -205,5 +211,5 @@ var/global/list/runlevel_flags = list(RUNLEVEL_LOBBY, RUNLEVEL_SETUP, RUNLEVEL_G
 */
 #define addtimer(args...) _addtimer(args, file = __FILE__, line = __LINE__)
 
-/// The timer key used to know how long subsystem initialization takes // CHOMPEdit
-#define SS_INIT_TIMER_KEY "ss_init" // CHOMPEdit
+/// The timer key used to know how long subsystem initialization takes
+#define SS_INIT_TIMER_KEY "ss_init"

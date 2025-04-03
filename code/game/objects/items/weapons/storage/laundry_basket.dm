@@ -24,9 +24,9 @@
 /obj/item/storage/laundry_basket/attack_hand(mob/living/user as mob)
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
-		var/obj/item/organ/external/temp = H.get_organ("r_hand")
+		var/obj/item/organ/external/temp = H.get_organ(BP_R_HAND)
 		if (user.hand)
-			temp = H.get_organ("l_hand")
+			temp = H.get_organ(BP_L_HAND)
 		if(!temp)
 			to_chat(user, span_warning("You need two hands to pick this up!"))
 			return
@@ -58,21 +58,21 @@
 	return
 
 
-/obj/item/storage/laundry_basket/MouseDrop(obj/over_object as obj)
+/obj/item/storage/laundry_basket/MouseDrop(obj/over_object)
 	if(over_object == usr)
 		return
 	else
 		return ..()
 
-/obj/item/storage/laundry_basket/dropped(mob/user as mob)
+/obj/item/storage/laundry_basket/dropped(mob/user)
 	if(linked)
 		QDEL_NULL(linked)
 	return ..()
 
-/obj/item/storage/laundry_basket/show_to(mob/user as mob)
+/obj/item/storage/laundry_basket/show_to(mob/user)
 	return
 
-/obj/item/storage/laundry_basket/open(mob/user as mob)
+/obj/item/storage/laundry_basket/open(mob/user)
 
 
 //Offhand
@@ -82,7 +82,8 @@
 	name = "second hand"
 	use_to_pickup = FALSE
 
-/obj/item/storage/laundry_basket/offhand/dropped(mob/user as mob)
+/obj/item/storage/laundry_basket/offhand/dropped(mob/user)
+	SHOULD_CALL_PARENT(FALSE)
 	if(user.isEquipped(linked))
 		user.drop_from_inventory(linked)
 	return

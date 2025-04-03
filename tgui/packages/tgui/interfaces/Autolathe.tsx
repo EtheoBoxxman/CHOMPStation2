@@ -1,5 +1,5 @@
-import { toTitleCase } from 'common/string';
 import { useCallback, useMemo } from 'react';
+import { useBackend, useSharedState } from 'tgui/backend';
 import { Window } from 'tgui/layouts';
 import {
   Box,
@@ -11,10 +11,10 @@ import {
   Tabs,
   VirtualList,
 } from 'tgui-core/components';
-import { BooleanLike } from 'tgui-core/react';
+import { formatSiUnit } from 'tgui-core/format';
+import type { BooleanLike } from 'tgui-core/react';
+import { toTitleCase } from 'tgui-core/string';
 
-import { useBackend, useSharedState } from '../backend';
-import { formatSiUnit } from '../format';
 import { Materials } from './ExosuitFabricator/Material';
 
 type MaterialData = {
@@ -71,7 +71,7 @@ const Designs = (props) => {
   const [searchText, setSearchText] = useSharedState('search_text', '');
 
   const materials = useMemo(() => {
-    let materials = {};
+    const materials = {};
     for (const material of data.materials) {
       materials[material.name] = material.amount;
     }
@@ -130,6 +130,7 @@ const Designs = (props) => {
               <Input
                 fluid
                 placeholder="Search all designs..."
+                updateOnPropsChange
                 value={searchText}
                 onChange={(e, val) => setSearchText(val)}
               />
@@ -158,7 +159,7 @@ const canBeMade = (
   available: Record<string, number>,
   multiplier: number = 1,
 ): boolean => {
-  for (let [id, amt] of Object.entries(required)) {
+  for (const [id, amt] of Object.entries(required)) {
     if ((available[id] || 0) < amt * multiplier) {
       return false;
     }

@@ -7,8 +7,7 @@
 /obj/item/implant/backup
 	name = "backup implant"
 	desc = "A mindstate backup implant that occasionally stores a copy of one's mind on a central server for backup purposes."
-	catalogue_data = list(/datum/category_item/catalogue/information/organization/vey_med,
-						/datum/category_item/catalogue/technology/resleeving)
+	catalogue_data = list(/datum/category_item/catalogue/technology/resleeving)
 	icon = 'icons/vore/custom_items_vr.dmi'
 	icon_state = "backup_implant"
 	known_implant = TRUE
@@ -23,7 +22,7 @@
 <b>Implant Specifications:</b><BR>
 <b>Name:</b> [using_map.company_name] Employee Backup Implant<BR>
 <b>Life:</b> ~8 hours.<BR>
-<b>Important Notes:</b> Due to the sensitive nature of the implant, it is programmed to dissolve into harmless bio-material after 24 hours, to prevent unforseen issues with poorly maintained implants<BR>
+<b>Important Notes:</b> Implant is life-limited due to licensing restrictions. Dissolves into harmless biomaterial after around ~8 hours, the typical work shift.<BR>
 <HR>
 <b>Implant Details:</b><BR>
 <b>Function:</b> Contains a small swarm of nanobots that perform neuron scanning to create mind-backups.<BR>
@@ -31,11 +30,11 @@
 <b>Integrity:</b> Generally very survivable. Susceptible to being destroyed by acid."}
 	return dat
 
-/obj/item/implant/backup/New(newloc, db_key)
+/obj/item/implant/backup/Initialize(mapload, db_key)
 	. = ..()
-	src.db_key = db_key
+	db_key = db_key
 
-/obj/item/implant/backup/Initialize()
+/obj/item/implant/backup/Initialize(mapload)
 	. = ..()
 	our_db = SStranscore.db_by_key(db_key)
 
@@ -54,8 +53,7 @@
 /obj/item/backup_implanter
 	name = "backup implanter"
 	desc = "After discovering that Nanotrasen was just re-using the same implanters over and over again on organics, leading to cross-contamination, Vey-Medical designed this self-cleaning model. Holds four backup implants at a time."
-	catalogue_data = list(/datum/category_item/catalogue/information/organization/vey_med,
-						/datum/category_item/catalogue/technology/resleeving)
+	catalogue_data = list(/datum/category_item/catalogue/technology/resleeving)
 	icon = 'icons/obj/device_alt.dmi'
 	icon_state = "bimplant"
 	item_state = "syringe_0"
@@ -68,8 +66,8 @@
 
 	var/db_key // To give to the baby implants
 
-/obj/item/backup_implanter/New()
-	..()
+/obj/item/backup_implanter/Initialize(mapload)
+	. = ..()
 	for(var/i = 1 to max_implants)
 		var/obj/item/implant/backup/imp = new(src, db_key)
 		imps |= imp
@@ -136,10 +134,9 @@
 	desc = "A case containing a backup implant."
 	icon_state = "implantcase-b"
 
-/obj/item/implantcase/backup/New()
-	src.imp = new /obj/item/implant/backup(src)
-	..()
-	return
+/obj/item/implantcase/backup/Initialize(mapload)
+	. = ..()
+	imp = new /obj/item/implant/backup(src)
 
 //The box of backup implants
 /obj/item/storage/box/backup_kit
@@ -148,14 +145,14 @@
 	icon_state = "implant"
 	item_state_slots = list(slot_r_hand_str = "syringe_kit", slot_l_hand_str = "syringe_kit")
 
-/obj/item/storage/box/backup_kit/New()
-	..()
+/obj/item/storage/box/backup_kit/Initialize(mapload)
+	. = ..()
 	for(var/i = 1 to 7)
 		new /obj/item/implantcase/backup(src)
 	new /obj/item/implanter(src)
 
 /*
 /obj/item/implant/backup/full
-	name = "khi backup implant"
-	desc = "A normal KHI wireless cortical stack with neutrino and QE transmission for constant-stream consciousness upload."
+	name = "backup implant"
+	desc = "A normal wireless cortical stack with neutrino and QE transmission for constant-stream consciousness upload."
 */

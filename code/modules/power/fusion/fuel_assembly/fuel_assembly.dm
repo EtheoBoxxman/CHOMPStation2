@@ -7,18 +7,15 @@
 
 	var/percent_depleted = 1
 	var/list/rod_quantities = list()
-	var/fuel_type = "composite"
+	var/fuel_type = MAT_COMPOSITE
 	var/fuel_colour
 	var/radioactivity = 0
 	var/const/initial_amount = 3000000
 
-/obj/item/fuel_assembly/New(var/newloc, var/_material, var/_colour)
+/obj/item/fuel_assembly/Initialize(mapload, var/_material, var/_colour)
+	. = ..()
 	fuel_type = _material
 	fuel_colour = _colour
-	..(newloc)
-
-/obj/item/fuel_assembly/Initialize()
-	. = ..()
 	var/datum/material/material = get_material_by_name(fuel_type)
 	if(istype(material))
 		name = "[material.use_name] fuel rod assembly"
@@ -53,14 +50,14 @@
 	return ..()
 
 // Mapper shorthand.
-/obj/item/fuel_assembly/deuterium/New(var/newloc)
-	..(newloc, "deuterium")
+/obj/item/fuel_assembly/deuterium/Initialize(mapload)
+	. = ..(mapload, MAT_DEUTERIUM)
 
-/obj/item/fuel_assembly/tritium/New(var/newloc)
-	..(newloc, "tritium")
+/obj/item/fuel_assembly/tritium/Initialize(mapload)
+	. = ..(mapload, MAT_TRITIUM)
 
-/obj/item/fuel_assembly/phoron/New(var/newloc)
-	..(newloc, "phoron")
+/obj/item/fuel_assembly/phoron/Initialize(mapload)
+	. = ..(mapload, MAT_PHORON)
 
-/obj/item/fuel_assembly/supermatter/New(var/newloc)
-	..(newloc, "supermatter")
+/obj/item/fuel_assembly/supermatter/Initialize(mapload)
+	. = ..(mapload, MAT_SUPERMATTER)

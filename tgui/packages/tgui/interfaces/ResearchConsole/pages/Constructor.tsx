@@ -1,4 +1,3 @@
-import { capitalizeAll } from 'common/string';
 import { Fragment, useState } from 'react';
 import { useBackend, useSharedState } from 'tgui/backend';
 import {
@@ -12,12 +11,13 @@ import {
   Section,
   Stack,
   Tabs,
-} from 'tgui/components';
+} from 'tgui-core/components';
+import { capitalizeAll } from 'tgui-core/string';
 
 import { PaginationChevrons } from '..';
 import {
-  ConstructorDesign,
-  ConstructorEnum,
+  type ConstructorDesign,
+  type ConstructorEnum,
   constructorEnumToBuild,
   constructorEnumToBuildFive,
   constructorEnumToData,
@@ -26,8 +26,8 @@ import {
   constructorEnumToEjectReagentAllAction,
   constructorEnumToName,
   constructorEnumToRemoveQueue,
-  Data,
-  LinkedConstructor,
+  type Data,
+  type LinkedConstructor,
 } from '../data';
 
 enum ConstructorTabEnum {
@@ -46,11 +46,7 @@ export const Constructor = (props: {
   const our_name = constructorEnumToName[type];
 
   if (!linked_data) {
-    return (
-      <Section title={`ERROR: Cannot Find ${our_name}`} fill>
-        Meow
-      </Section>
-    );
+    return <Section title={`ERROR: Cannot Find ${our_name}`} fill />;
   }
 
   return (
@@ -194,6 +190,7 @@ const BuildTab = (props: {
     >
       <Input
         fluid
+        updateOnPropsChange
         placeholder="Search for..."
         value={data.search}
         onInput={(e, v: string) => act('search', { search: v })}

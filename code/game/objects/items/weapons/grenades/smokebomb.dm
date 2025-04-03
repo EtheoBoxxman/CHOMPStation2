@@ -11,10 +11,10 @@
 	var/smoke_color
 	var/smoke_strength = 8
 
-/obj/item/grenade/smokebomb/New()
-	..()
-	src.smoke = new /datum/effect/effect/system/smoke_spread/bad()
-	src.smoke.attach(src)
+/obj/item/grenade/smokebomb/Initialize(mapload)
+	. = ..()
+	smoke = new /datum/effect/effect/system/smoke_spread/bad()
+	smoke.attach(src)
 
 /obj/item/grenade/smokebomb/Destroy()
 	qdel(smoke)
@@ -34,6 +34,6 @@
 
 /obj/item/grenade/smokebomb/attackby(obj/item/I as obj, mob/user as mob)
 	if(istype(I,/obj/item/multitool))
-		var/new_smoke_color = input(user, "Choose a color for the smoke:", "Smoke Color", smoke_color) as color|null
+		var/new_smoke_color = tgui_color_picker(user, "Choose a color for the smoke:", "Smoke Color", smoke_color)
 		if(new_smoke_color)
 			smoke_color = new_smoke_color

@@ -18,14 +18,14 @@
 	fire_sound = 'sound/weapons/bladeslice.ogg'
 	fire_sound_text = "a strange noise"
 
-/obj/item/gun/launcher/spikethrower/New()
-	..()
+/obj/item/gun/launcher/spikethrower/Initialize(mapload)
+	. = ..()
 	START_PROCESSING(SSobj, src)
 	last_regen = world.time
 
 /obj/item/gun/launcher/spikethrower/Destroy()
 	STOP_PROCESSING(SSobj, src)
-	..()
+	. = ..()
 
 /obj/item/gun/launcher/spikethrower/process()
 	if(spikes < max_spikes && world.time > last_regen + spike_gen_time)
@@ -54,6 +54,7 @@
 /obj/item/gun/energy/darkmatter
 	name = "dark matter gun"
 	desc = "A vicious alien beam weapon. Parts of it quiver gelatinously, as though the thing is insectile and alive."
+	icon = 'icons/obj/gun.dmi' // CHOMPAdd
 	icon_state = "darkcannon"
 	item_state = "darkcannon"
 	w_class = ITEMSIZE_HUGE
@@ -117,6 +118,7 @@
 /obj/item/gun/energy/sonic
 	name = "soundcannon"
 	desc = "A vicious alien sound weapon. Parts of it quiver gelatinously, as though the thing is insectile and alive."
+	icon = 'icons/obj/gun.dmi' // CHOMPAdd
 	icon_state = "noise"
 	item_state = "noise"
 	w_class = ITEMSIZE_HUGE

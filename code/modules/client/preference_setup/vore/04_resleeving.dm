@@ -29,23 +29,23 @@
 		spawn(50)
 			if(QDELETED(character) || QDELETED(pref))
 				return // They might have been deleted during the wait
-			if(!character.virtual_reality_mob && !(/mob/living/carbon/human/proc/exit_vr in character.verbs)) // CHOMPedit start: janky fix to prevent resleeving VR avatars but beats refactoring transcore
+			if(!character.virtual_reality_mob && !(/mob/living/carbon/human/proc/exit_vr in character.verbs)) //Janky fix to prevent resleeving VR avatars but beats refactoring transcore
 				if(pref.resleeve_scan)
 					var/datum/transhuman/body_record/BR = new()
 					BR.init_from_mob(character, pref.resleeve_scan, pref.resleeve_lock)
 				if(pref.mind_scan)
 					var/datum/transcore_db/our_db = SStranscore.db_by_key(null)
 					if(our_db)
-						our_db.m_backup(character.mind,character.nif,one_time = TRUE) // CHOMPedit end
+						our_db.m_backup(character.mind,character.nif,one_time = TRUE)
 			if(pref.resleeve_lock)
 				character.resleeve_lock = character.ckey
 			character.original_player = character.ckey
 
 /datum/category_item/player_setup_item/vore/resleeve/content(var/mob/user)
 	. += "<br>"
-	. += span_bold("Start With Body Scan:") + " <a [pref.resleeve_scan ? "class='linkOn'" : ""] href='?src=\ref[src];toggle_resleeve_scan=1'><b>[pref.resleeve_scan ? "Yes" : "No"]</b></a><br>"
-	. += span_bold("Start With Mind Scan:") + " <a [pref.mind_scan ? "class='linkOn'" : ""] href='?src=\ref[src];toggle_mind_scan=1'><b>[pref.mind_scan ? "Yes" : "No"]</b></a><br>"
-	. += span_bold("Prevent Body Impersonation:") + " <a [pref.resleeve_lock ? "class='linkOn'" : ""] href='?src=\ref[src];toggle_resleeve_lock=1'><b>[pref.resleeve_lock ? "Yes" : "No"]</b></a><br>"
+	. += span_bold("Start With Body Scan:") + " <a [pref.resleeve_scan ? "class='linkOn'" : ""] href='byond://?src=\ref[src];toggle_resleeve_scan=1'><b>[pref.resleeve_scan ? "Yes" : "No"]</b></a><br>"
+	. += span_bold("Start With Mind Scan:") + " <a [pref.mind_scan ? "class='linkOn'" : ""] href='byond://?src=\ref[src];toggle_mind_scan=1'><b>[pref.mind_scan ? "Yes" : "No"]</b></a><br>"
+	. += span_bold("Prevent Body Impersonation:") + " <a [pref.resleeve_lock ? "class='linkOn'" : ""] href='byond://?src=\ref[src];toggle_resleeve_lock=1'><b>[pref.resleeve_lock ? "Yes" : "No"]</b></a><br>"
 
 /datum/category_item/player_setup_item/vore/resleeve/OnTopic(var/href, var/list/href_list, var/mob/user)
 	if(href_list["toggle_resleeve_lock"])

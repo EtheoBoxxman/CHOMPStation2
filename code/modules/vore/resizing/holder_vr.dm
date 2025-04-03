@@ -1,8 +1,10 @@
 /obj/item/holder/dropped(mob/user)
+	// CHOMPEdit Start
 	..()
 	spawn(1)
 		if(!throwing && isturf(loc))
 			qdel(src)
+	// CHOMPEdit End
 
 /obj/item/holder/attack_hand(mob/living/user as mob) //straight up just copypasted from objects/items.dm with a few things changed (doesn't called dropped unless +actually dropped+)
 	if (!user) return
@@ -11,9 +13,9 @@
 		return
 	if (hasorgans(user))
 		var/mob/living/carbon/human/H = user
-		var/obj/item/organ/external/temp = H.organs_by_name["r_hand"]
+		var/obj/item/organ/external/temp = H.organs_by_name[BP_R_HAND]
 		if (user.hand)
-			temp = H.organs_by_name["l_hand"]
+			temp = H.organs_by_name[BP_L_HAND]
 		if(temp && !temp.is_usable())
 			to_chat(user, span_notice("You try to move your [temp.name], but cannot!"))
 			return

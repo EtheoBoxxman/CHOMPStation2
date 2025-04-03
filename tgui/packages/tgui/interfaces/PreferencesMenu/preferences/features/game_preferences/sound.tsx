@@ -1,4 +1,9 @@
-import { CheckboxInput, FeatureToggle } from '../base';
+import {
+  CheckboxInput,
+  FeatureNumberInput,
+  type FeatureNumeric,
+  type FeatureToggle,
+} from '../base';
 
 export const SOUND_MIDI: FeatureToggle = {
   name: 'Play Admin MIDIs',
@@ -133,24 +138,18 @@ export const SOUND_MENTORHELP: FeatureToggle = {
   component: CheckboxInput,
 };
 
-// Vorey sounds
-export const BELCH_NOISES: FeatureToggle = {
-  name: 'Belch Noises',
+export const ambience_freq: FeatureNumeric = {
+  name: 'Ambience Frequency',
   category: 'SOUNDS',
-  description: 'Enable hearing burping noises.',
-  component: CheckboxInput,
+  description:
+    'How often you wish to hear ambience repeated! (1-60 MINUTES, 0 for disabled)',
+  component: FeatureNumberInput,
 };
 
-export const EATING_NOISES: FeatureToggle = {
-  name: 'Eating Noises',
+export const ambience_chance: FeatureNumeric = {
+  name: 'Ambience Chance',
   category: 'SOUNDS',
-  description: 'Enable hearing vore eating noises.',
-  component: CheckboxInput,
-};
-
-export const DIGEST_NOISES: FeatureToggle = {
-  name: 'Digestion Noises',
-  category: 'SOUNDS',
-  description: 'Enable hearing vore digestion noises.',
-  component: CheckboxInput,
+  description:
+    "The chance you'd like to hear ambience played to you (On area change, or by random ambience). 35 means a 35% chance to play ambience. This is a range from 0-100. 0 disables ambience playing entirely. This is also affected by Ambience Frequency.",
+  component: FeatureNumberInput,
 };

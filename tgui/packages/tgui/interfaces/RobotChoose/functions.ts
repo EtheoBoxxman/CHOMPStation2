@@ -1,8 +1,7 @@
-import { filter } from 'common/collections';
-import { flow } from 'common/fp';
-import { createSearch } from 'common/string';
+import { flow } from 'tgui-core/fp';
+import { createSearch } from 'tgui-core/string';
 
-import { spriteOption } from './types';
+import type { spriteOption } from './types';
 
 export function robotSpriteSearcher(
   searchText: string,
@@ -18,7 +17,7 @@ export function robotSpriteSearcher(
   if (!sprites) {
     return [];
   }
-  let subtypes: string[] = [];
+  const subtypes: string[] = [];
   if (includeDefault) {
     subtypes.push('def');
   }
@@ -33,14 +32,14 @@ export function robotSpriteSearcher(
       if (!searchText) {
         return sprites;
       } else {
-        return filter(sprites, testSearch);
+        return sprites.filter(testSearch);
       }
     },
     (sprites: spriteOption[]) => {
       if (!subtypes.length) {
         return sprites;
       } else {
-        return filter(sprites, (sprite) => subtypes.includes(sprite.type));
+        return sprites.filter((sprite) => subtypes.includes(sprite.type));
       }
     },
   ])(sprites);

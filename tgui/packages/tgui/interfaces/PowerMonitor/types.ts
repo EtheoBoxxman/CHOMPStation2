@@ -1,4 +1,4 @@
-import { BooleanLike } from 'common/react';
+import type { BooleanLike } from 'tgui-core/react';
 
 export type Data = {
   all_sensors: { name: string; alarm: BooleanLike }[];

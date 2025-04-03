@@ -21,7 +21,7 @@
 	else //If they have enough nutrition and body weight, they can exercise.
 		user.setClickCooldown(cooldown)
 		user.adjust_nutrition(-10 * weightloss_power)
-		user.weight -= 0.1 * weightloss_power * (0.01 * user.weight_loss) //CHOMPEdit Making weight loss mechanically more accessible
+		user.weight -= 0.25 * weightloss_power * (0.01 * user.weight_loss)
 		flick("[icon_state]2", src)
 		var/message = pick(messages)
 		to_chat(user, span_notice("[message]."))
@@ -79,6 +79,14 @@
 	desc = "A specialized machine that can be used for an assortment of excercises involving moving some weight repeatedly. Often used with the goal of losing weight."
 	icon_state = "fitnesslifter" //Sprites ripped from goon.
 	messages = list("You lift some weights")
+	weightloss_power = 2
+	cooldown = 40
+
+/obj/machinery/fitness/heavy/treadmill
+	name = "treadmill"
+	desc = "A treadmill for running on! Often used with the goal of losing weight."
+	icon_state = "treadmill"
+	messages = list("You run for a while")
 	weightloss_power = 2
 	cooldown = 40
 

@@ -40,7 +40,6 @@
 	show_verb_panel = FALSE
 	///Contains admin info. Null if client is not an admin.
 	var/datum/admins/holder = null
-	var/datum/admins/deadmin_holder = null
 	var/buildmode		= 0
 
 	///Contains the last message sent by this client - used to protect against copy-paste spamming.
@@ -82,6 +81,10 @@
 	var/mute_irc = 0
 	var/ip_reputation = 0 //Do we think they're using a proxy/vpn? Only if IP Reputation checking is enabled in config.
 
+	///Used for limiting the rate of topic sends by the client to avoid abuse
+	var/list/topiclimiter
+	///Used for limiting the rate of clicks sends by the client to avoid abuse
+	var/list/clicklimiter
 
 		////////////////////////////////////
 		//things that require the database//
@@ -112,11 +115,11 @@
 	///Average ping of the client
 	var/avgping = 0
 
- 	///world.time they connected
+	///world.time they connected
 	var/connection_time
- 	///world.realtime they connected
+	///world.realtime they connected
 	var/connection_realtime
- 	///world.timeofday they connected
+	///world.timeofday they connected
 	var/connection_timeofday
 
 	// Runechat messages
@@ -163,7 +166,7 @@
 
 	/// Bitfield of movement dirs that were released *this* cycle (even if currently held).
 	/// Note that only dirs that were already held at the start of this cycle are included, if it pressed then released it won't be in here.
- 	/// On next move, subtract this dir from the move that would otherwise be done
+	/// On next move, subtract this dir from the move that would otherwise be done
 	var/next_move_dir_sub
 
 	#ifdef CARDINAL_INPUT_ONLY
@@ -175,3 +178,6 @@
 
 	/// If this client has been fully initialized or not
 	var/fully_created = FALSE
+
+	/// Token used for the external chatlog api. Only valid for the current round.
+	var/chatlog_token

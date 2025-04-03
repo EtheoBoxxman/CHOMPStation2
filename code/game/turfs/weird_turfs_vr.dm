@@ -19,7 +19,7 @@
 	cut_overlays()
 	if(prob(5))
 		add_glow()
-	if(istype(O, /mob/living/carbon/human))
+	if(ishuman(O))
 		var/mob/living/carbon/human/L = O
 		if(istype(L.species, /datum/species/crew_shadekin))
 			L.halloss += 5
@@ -28,7 +28,7 @@
 			if(prob(5))
 				L.visible_message("[L]'s body gives off a faint, sparking, haze...", "Your body gives off a faint, sparking, haze...", runemessage = "gives off a faint, sparking haze")
 		else if(istype(L.species, /datum/species/shadekin))
-			var/obj/item/organ/internal/brain/shadekin/B = L.internal_organs_by_name["brain"]
+			var/obj/item/organ/internal/brain/shadekin/B = L.internal_organs_by_name[O_BRAIN]
 			B.dark_energy += 10
 			if(prob(10))
 				to_chat(L, span_notice("You can feel the energy flowing into you!"))
@@ -78,7 +78,7 @@
 	cut_overlays()
 	if(prob(5))
 		add_glow()
-	if(istype(O, /mob/living/carbon/human))
+	if(ishuman(O))
 		var/mob/living/carbon/human/L = O
 		if(istype(L.species, /datum/species/crew_shadekin))
 			L.halloss += 5
@@ -87,7 +87,7 @@
 			if(prob(5))
 				L.visible_message("[L]'s body gives off a faint, sparking, haze...", "Your body gives off a faint, sparking, haze...", runemessage = "gives off a faint, sparking haze")
 		else if(istype(L.species, /datum/species/shadekin))
-			var/obj/item/organ/internal/brain/shadekin/B = L.internal_organs_by_name["brain"]
+			var/obj/item/organ/internal/brain/shadekin/B = L.internal_organs_by_name[O_BRAIN]
 			B.dark_energy += 10
 			if(prob(10))
 				to_chat(L, span_notice("You can feel the energy flowing into you!"))

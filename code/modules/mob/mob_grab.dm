@@ -342,11 +342,8 @@
 				if(I_DISARM)
 					pin_down(affecting, assailant)
 
-	//clicking on yourself while grabbing them
-	if(M == assailant && state >= GRAB_AGGRESSIVE)
-		devour(affecting, assailant)
-
-/obj/item/grab/dropped()
+/obj/item/grab/dropped(mob/user)
+	..()
 	loc = null
 	if(!QDELETED(src))
 		qdel(src)

@@ -27,7 +27,7 @@
 
 	return 0
 
- //No longer needed, but I'll leave it here incase we plan to re-use it.
+//No longer needed, but I'll leave it here incase we plan to re-use it.
 /mob/living/silicon/robot/movement_delay()
 	. = speed
 
@@ -84,7 +84,7 @@
 			else if(istype(A, /obj/item))
 				var/obj/item/cleaned_item = A
 				cleaned_item.clean_blood()
-			else if(istype(A, /mob/living/carbon/human))
+			else if(ishuman(A))
 				var/mob/living/carbon/human/cleaned_human = A
 				if(cleaned_human.lying)
 					if(cleaned_human.head)

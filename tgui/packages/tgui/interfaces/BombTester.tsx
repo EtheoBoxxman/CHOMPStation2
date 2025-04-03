@@ -1,9 +1,15 @@
-import { BooleanLike } from 'common/react';
 import { Component } from 'react';
-
-import { useBackend } from '../backend';
-import { Box, Button, Icon, LabeledList, Section, Slider } from '../components';
-import { Window } from '../layouts';
+import { useBackend } from 'tgui/backend';
+import { Window } from 'tgui/layouts';
+import {
+  Box,
+  Button,
+  Icon,
+  LabeledList,
+  Section,
+  Slider,
+} from 'tgui-core/components';
+import type { BooleanLike } from 'tgui-core/react';
 
 type Data = {
   simulating: BooleanLike;
@@ -150,8 +156,8 @@ class BombTesterSimulation extends Component {
     const BOUND_Y: number = 205;
     const MOVEMENT_SPEED: number = 2;
 
-    let startRight: boolean = Math.random() > 0.5;
-    let startBottom: boolean = Math.random() > 0.5;
+    const startRight: boolean = Math.random() > 0.5;
+    const startBottom: boolean = Math.random() > 0.5;
 
     this.state = {
       x: startRight ? BOUND_X : 0,
@@ -207,7 +213,7 @@ class BombTesterSimulation extends Component {
   render() {
     const { x, y } = this.state;
 
-    const newStyle = {
+    const newStyle: {} = {
       position: 'relative',
       left: x + 'px',
       top: y + 'px',

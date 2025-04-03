@@ -1,12 +1,11 @@
 import { useBackend } from 'tgui/backend';
-import { Button } from 'tgui/components';
 import { NtosWindow } from 'tgui/layouts';
-import { ByondUi } from 'tgui-core/components';
+import { Button, ByondUi } from 'tgui-core/components';
 
 import {
-  camera,
+  type camera,
   CameraConsoleContent,
-  Data,
+  type Data,
   prevNextCamera,
   selectCameras,
 } from './CameraConsole';

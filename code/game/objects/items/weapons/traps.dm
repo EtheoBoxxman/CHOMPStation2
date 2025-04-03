@@ -13,8 +13,8 @@
 	icon_state = "beartrap0"
 	desc = "A mechanically activated leg trap. Low-tech, but reliable. Looks like it could really hurt if you set it off."
 	randpixel = 0
-	center_of_mass_x = 0 //CHOMPEdit
-	center_of_mass_y = 0 //CHOMPEdit
+	center_of_mass_x = 0
+	center_of_mass_y = 0
 	throwforce = 0
 	w_class = ITEMSIZE_NORMAL
 	origin_tech = list(TECH_MATERIAL = 1)
@@ -85,7 +85,7 @@
 	if(L.lying)
 		target_zone = ran_zone()
 	else
-		target_zone = pick("l_foot", "r_foot", "l_leg", "r_leg")
+		target_zone = pick(BP_L_FOOT, BP_R_FOOT, BP_L_LEG, BP_R_LEG)
 
 	//armour
 	var/blocked = L.run_armor_check(target_zone, "melee")
@@ -125,12 +125,13 @@
 		return
 	if(deployed && isliving(AM))
 		var/mob/living/L = AM
-		if(L.m_intent == "run")
+		if(L.m_intent == I_RUN)
 			L.visible_message(
 				span_danger("[L] steps on \the [src]."),
 				span_danger("You step on \the [src]!"),
 				span_infoplain(span_bold("You hear a loud metallic snap!"))
 				)
+			SSmotiontracker.ping(src,100) // Clunk!
 			attack_mob(L)
 			if(!has_buckled_mobs())
 				anchored = FALSE
@@ -272,7 +273,7 @@
 		return
 	if(anchored && isliving(AM))
 		var/mob/living/L = AM
-		if(L.m_intent == "run")
+		if(L.m_intent == I_RUN)
 			L.visible_message(
 				span_danger("[L] steps in \the [src]."),
 				span_danger("You step in \the [src]!"),
@@ -332,7 +333,7 @@
 	if(L.lying)
 		target_zone = ran_zone()
 	else
-		target_zone = pick("l_foot", "r_foot", "l_leg", "r_leg")
+		target_zone = pick(BP_L_FOOT, BP_R_FOOT, BP_L_LEG, BP_R_LEG)
 
 	//armour
 	var/blocked = L.run_armor_check(target_zone, "melee")
@@ -351,7 +352,7 @@
 
 	L.add_modifier(/datum/modifier/entangled, 3 SECONDS)
 
-	if(!L.apply_damage(force * (issilicon(L) ? 0.25 : 1), BRUTE, target_zone, blocked, soaked, src, sharp, edge))
+	if(!L.apply_damage(force * (issilicon(L) ? 0.25 : 1), BRUTE, target_zone, blocked, soaked, sharp, edge, src))
 		return
 
 	playsound(src, 'sound/effects/glass_step.ogg', 50, 1) // not sure how to handle metal shards with sounds
@@ -369,7 +370,7 @@
 
 		to_chat(H, span_danger("You step directly on \the [src]!"))
 
-		var/list/check = list("l_foot", "r_foot")
+		var/list/check = list(BP_L_FOOT, BP_R_FOOT)
 		while(check.len)
 			var/picked = pick(check)
 			var/obj/item/organ/external/affecting = H.get_organ(picked)

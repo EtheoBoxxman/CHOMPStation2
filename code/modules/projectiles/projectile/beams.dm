@@ -365,11 +365,11 @@
 /obj/item/projectile/beam/stun/disabler/on_hit(atom/target, blocked = 0, def_zone)
 	. = ..(target, blocked, def_zone)
 
-	if(. && istype(target, /mob/living/silicon/robot) && prob(agony))
+	if(. && isrobot(target) && prob(agony))
 		var/mob/living/silicon/robot/R = target
 		var/drainamt = agony * (rand(5, 15) / 10)
 		R.drain_power(0, 0, drainamt)
-		if(istype(firer, /mob/living/silicon/robot)) // Mischevious sappers, the swarm drones are.
+		if(isrobot(firer)) // Mischevious sappers, the swarm drones are.
 			var/mob/living/silicon/robot/A = firer
 			if(A.cell)
 				A.cell.give(drainamt * 2)
@@ -392,18 +392,18 @@
 	hud_state = "laser_disabler"
 
 /obj/item/projectile/beam/disable
-    name = "disabler beam"
-    icon_state = "omnilaser"
-    nodamage = 1
-    taser_effect = 1
-    agony = 100 //One shot stuns for the time being until adjustments are fully made.
-    damage_type = HALLOSS
-    light_color = "#00CECE"
-   	hud_state = "laser_disabler"
+	name = "disabler beam"
+	icon_state = "omnilaser"
+	nodamage = 1
+	taser_effect = 1
+	agony = 100 //One shot stuns for the time being until adjustments are fully made.
+	damage_type = HALLOSS
+	light_color = "#00CECE"
+	hud_state = "laser_disabler"
 
-    muzzle_type = /obj/effect/projectile/muzzle/laser_omni
-    tracer_type = /obj/effect/projectile/tracer/laser_omni
-    impact_type = /obj/effect/projectile/impact/laser_omni
+	muzzle_type = /obj/effect/projectile/muzzle/laser_omni
+	tracer_type = /obj/effect/projectile/tracer/laser_omni
+	impact_type = /obj/effect/projectile/impact/laser_omni
 
 /obj/item/projectile/beam/shock
 	name = "shock beam"
@@ -500,6 +500,29 @@
 	impact_type = /obj/effect/projectile/impact/rainbow
 	hud_state = "laser"
 	damage = 20
+
+/obj/item/projectile/beam/sparkledog
+	name = "rainbow"
+	fire_sound = 'sound/weapons/sparkle.ogg'
+	icon_state = "rainbow"
+	light_color = "#ffffff"
+	muzzle_type = /obj/effect/projectile/muzzle/rainbow
+	tracer_type = /obj/effect/projectile/tracer/rainbow
+	impact_type = /obj/effect/projectile/impact/rainbow
+	hud_state = "laser"
+	damage = 0
+	nodamage = TRUE
+
+/obj/item/projectile/beam/sparkledog/on_hit(var/atom/target, var/blocked = 0)
+	if(ishuman(target))
+		var/mob/living/carbon/human/M = target
+		M.druggy = max(M.druggy, 20)
+		if(M.health < M.maxHealth)
+			to_chat(target, span_notice("As the beam strikes you, you feel a little healthier!"))
+			M.adjustBruteLoss(-5)
+			M.adjustFireLoss(-5)
+	return 1
+
 //
 // Projectile Beam Definitions
 //
@@ -562,13 +585,13 @@
 	impact_type = /obj/effect/projectile/impact/medigun
 
 /obj/item/projectile/beam/medigun/on_hit(var/atom/target, var/blocked = 0)
-	if(istype(target, /mob/living/carbon/human))
+	if(ishuman(target))
 		var/mob/living/carbon/human/M = target
 		if(M.health < M.maxHealth)
 			var/obj/effect/overlay/pulse = new /obj/effect/overlay(get_turf(M))
 			pulse.icon = 'icons/effects/effects.dmi'
-			pulse.icon_state = "heal"
-			pulse.name = "heal"
+			pulse.icon_state = XENO_CHEM_HEAL
+			pulse.name = XENO_CHEM_HEAL
 			pulse.anchored = TRUE
 			spawn(20)
 				qdel(pulse)
@@ -578,3 +601,7 @@
 			M.adjustToxLoss(-5)
 			M.adjustOxyLoss(-5)
 	return 1
+
+/obj/item/projectile/beam/laser_vision
+	name = "laser"
+	damage = 10

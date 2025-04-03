@@ -1,17 +1,18 @@
 //A system to manage and display alerts on screen without needing you to do it yourself
 
-//PUBLIC -  call these wherever you want
+//PUBLIC - call these wherever you want
 
 
 /mob/proc/throw_alert(category, type, severity, obj/new_master)
 
-/* Proc to create or update an alert. Returns the alert if the alert is new or updated, 0 if it was thrown already
- category is a text string. Each mob may only have one alert per category; the previous one will be replaced
- path is a type path of the actual alert type to throw
- severity is an optional number that will be placed at the end of the icon_state for this alert
- For example, high pressure's icon_state is "highpressure" and can be serverity 1 or 2 to get "highpressure1" or "highpressure2"
- new_master is optional and sets the alert's icon state to "template" in the ui_style icons with the master as an overlay.
- Clicks are forwarded to master */
+/** Proc to create or update an alert. Returns the alert if the alert is new or updated, 0 if it was thrown already
+ * category is a text string. Each mob may only have one alert per category; the previous one will be replaced
+ * path is a type path of the actual alert type to throw
+ * severity is an optional number that will be placed at the end of the icon_state for this alert
+ * For example, high pressure's icon_state is "highpressure" and can be serverity 1 or 2 to get "highpressure1" or "highpressure2"
+ * new_master is optional and sets the alert's icon state to "template" in the ui_style icons with the master as an overlay.
+ * Clicks are forwarded to master
+ */
 
 	if(!category)
 		return
@@ -150,6 +151,11 @@ Your emergency supply kit should have an air tank and gas mask in it!"						// C
 	name = "Choking (No Sleeping Gas)"
 	desc = "You're not getting enough sleeping gas. Find some good air before you pass out!"
 	icon_state = "not_enough_tox"
+
+/obj/screen/alert/not_enough_atmos
+	name = "Choking (No Breath)"
+	desc = "The atmosphere around you lacks any form of breathable air! Find some good air before you pass out!"
+	icon_state = "not_enough_oxy"
 //End gas alerts
 
 

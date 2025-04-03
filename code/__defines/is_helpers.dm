@@ -38,16 +38,20 @@
 #define isnewplayer(A)	istype(A, /mob/new_player)
 
 #define isanimal(A)		istype(A, /mob/living/simple_mob)
+#define ispassive(A)	istype(A, /mob/living/simple_mob/animal/passive)
 #define ismouse(A)		istype(A, /mob/living/simple_mob/animal/passive/mouse)
 #define iscorgi(A)		istype(A, /mob/living/simple_mob/animal/passive/dog/corgi)
 #define isslime(A)		istype(A, /mob/living/simple_mob/slime)
 #define isxeno(A)		istype(A, /mob/living/simple_mob/animal/space/alien)
+#define issimplekin(A)	istype(A, /mob/living/simple_mob/shadekin)
+#define isprotblob(A)	istype(A, /mob/living/simple_mob/protean_blob)
 #define ismetroid(A)	istype(A, /mob/living/simple_mob/metroid) //CHOMP Addition
 
 #define iscarbon(A)		istype(A, /mob/living/carbon)
 #define isalien(A)		istype(A, /mob/living/carbon/alien)
 #define isbrain(A)		istype(A, /mob/living/carbon/brain)
 #define ishuman(A)		istype(A, /mob/living/carbon/human)
+#define ismannequin(A)	istype(A, /mob/living/carbon/human/dummy/mannequin)
 
 #define issilicon(A)	istype(A, /mob/living/silicon)
 #define isAI(A)			istype(A, /mob/living/silicon/ai)
@@ -63,9 +67,15 @@
 //#define isturf(D)		istype(D, /turf)	//Built in
 #define isopenspace(A)	istype(A, /turf/simulated/open)
 #define isspace(A)		istype(A, /turf/space)
-#define isopenturf(A)	istype(A, /turf/simulated/open) || istype(A, /turf/space)
-#define isnonsolidturf(A)	istype(A, /turf/simulated/open) || istype(A, /turf/space) || istype(A, /turf/simulated/floor/water) || istype(A, /turf/simulated/floor/lava)
+#define isopenturf(A)	(istype(A, /turf/simulated/open) || istype(A, /turf/space))
+#define isnonsolidturf(A)	(istype(A, /turf/simulated/open) || istype(A, /turf/space) || istype(A, /turf/simulated/floor/water) || istype(A, /turf/simulated/floor/lava))
 #define ismineralturf(A) istype(A, /turf/simulated/mineral)
 
 #define istaurtail(A)	istype(A, /datum/sprite_accessory/tail/taur)
 #define islongtail(A)	istype(A, /datum/sprite_accessory/tail/longtail)
+
+// Diveable water
+#define isdiveablewater(A)	istype(A, /turf/simulated/floor/water/deep/ocean/diving)
+
+/// NaN isn't a number, damn it. Infinity is a problem too.
+#define isnum_safe(x) ( isnum((x)) && !isnan((x)) && !isinf((x)) )

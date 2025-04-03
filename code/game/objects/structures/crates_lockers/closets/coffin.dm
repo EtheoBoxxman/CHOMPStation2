@@ -13,7 +13,7 @@
 	name = "grave"
 	desc = "Dirt."
 	icon = 'icons/obj/closets/grave.dmi'
-	icon_state = "closed_unlocked"
+	icon_state = ""
 	seal_tool = null
 	breakout_sound = 'sound/weapons/thudswoosh.ogg'
 	anchored = TRUE
@@ -42,7 +42,7 @@
 		add_fingerprint(M)
 		if(ishuman(M))
 			var/mob/living/carbon/human/H = M
-			if(H.m_intent == "walk")
+			if(H.m_intent == I_WALK)
 				to_chat(H, span_warning("You stop at the edge of \the [src.name]."))
 				return FALSE
 			else
@@ -70,16 +70,16 @@
 	if(src.opened)
 		if(istype(W, /obj/item/shovel))
 			user.visible_message(span_notice("[user] piles dirt into \the [src.name]."), \
-								 span_notice("You start to pile dirt into \the [src.name]."), \
-								 span_notice("You hear dirt being moved."))
+									span_notice("You start to pile dirt into \the [src.name]."), \
+									span_notice("You hear dirt being moved."))
 			if(do_after(user, 40 * W.toolspeed))
 				user.visible_message(span_notice("[user] pats down the dirt on top of \the [src.name]."), \
-								 span_notice("You finish filling in \the [src.name]."))
+									span_notice("You finish filling in \the [src.name]."))
 				close()
 				return
 			else
 				user.visible_message(span_notice("[user] stops filling in \the [src.name]."), \
-								 span_notice("You change your mind and stop filling in \the [src.name]."))
+									span_notice("You change your mind and stop filling in \the [src.name]."))
 				return
 		if(istype(W, /obj/item/grab))
 			var/obj/item/grab/G = W
@@ -93,25 +93,25 @@
 			for(var/obj/item/I in LB.contents)
 				LB.remove_from_storage(I, T)
 			user.visible_message(span_notice("[user] empties \the [LB] into \the [src]."), \
-								 span_notice("You empty \the [LB] into \the [src]."), \
-								 span_notice("You hear rustling of clothes."))
+									span_notice("You empty \the [LB] into \the [src]."), \
+									span_notice("You hear rustling of clothes."))
 			return
 		if(isrobot(user))
 			return
 		if(W.loc != user) // This should stop mounted modules ending up outside the module.
 			return
-		usr.drop_item()
+		user.drop_item()
 		if(W)
 			W.forceMove(src.loc)
 	else
 		if(istype(W, /obj/item/shovel))
 			if(user.a_intent == I_HURT)	// Hurt intent means you're trying to kill someone, or just get rid of the grave
 				user.visible_message(span_notice("[user] begins to smoothe out the dirt of \the [src.name]."), \
-									 span_notice("You start to smoothe out the dirt of \the [src.name]."), \
-									 span_notice("You hear dirt being moved."))
+										span_notice("You start to smoothe out the dirt of \the [src.name]."), \
+										span_notice("You hear dirt being moved."))
 				if(do_after(user, 40 * W.toolspeed))
 					user.visible_message(span_notice("[user] finishes smoothing out \the [src.name]."), \
-										 span_notice("You finish smoothing out \the [src.name]."))
+											span_notice("You finish smoothing out \the [src.name]."))
 					if(LAZYLEN(contents))
 						alpha = 40	// If we've got stuff inside, like maybe a person, just make it hard to see us
 					else
@@ -119,20 +119,20 @@
 					return
 				else
 					user.visible_message(span_notice("[user] stops concealing \the [src.name]."), \
-										 span_notice("You stop concealing \the [src.name]."))
+											span_notice("You stop concealing \the [src.name]."))
 					return
 			else
 				user.visible_message(span_notice("[user] begins to unearth \the [src.name]."), \
-									 span_notice("You start to unearth \the [src.name]."), \
-									 span_notice("You hear dirt being moved."))
+										span_notice("You start to unearth \the [src.name]."), \
+										span_notice("You hear dirt being moved."))
 				if(do_after(user, 40 * W.toolspeed))
 					user.visible_message(span_notice("[user] reaches the bottom of \the [src.name]."), \
-										 span_notice("You finish digging out \the [src.name]."))
+											span_notice("You finish digging out \the [src.name]."))
 					break_open()
 					return
 				else
 					user.visible_message(span_notice("[user] stops digging out \the [src.name]."), \
-										 span_notice("You stop digging out \the [src.name]."))
+											span_notice("You stop digging out \the [src.name]."))
 					return
 	return
 
@@ -149,7 +149,7 @@
 	return PROJECTILE_CONTINUE	// It's a hole in the ground, doesn't usually stop or even care about bullets
 
 /obj/structure/closet/grave/return_air_for_internal_lifeform(var/mob/living/L)
-	var/gasid = "carbon_dioxide"
+	var/gasid = GAS_CO2
 	if(ishuman(L))
 		var/mob/living/carbon/human/H = L
 		if(H.species && H.species.exhale_type)

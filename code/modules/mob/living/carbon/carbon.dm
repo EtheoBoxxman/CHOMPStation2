@@ -1,4 +1,4 @@
-/mob/living/carbon/Initialize()
+/mob/living/carbon/Initialize(mapload)
 	. = ..()
 	//setup reagent holders
 	bloodstr = new/datum/reagents/metabolism/bloodstream(500, src)
@@ -8,7 +8,7 @@
 	if (!default_language && species_language)
 		default_language = GLOB.all_languages[species_language]
 
-	AddElement(/datum/element/footstep, custom_footstep, 1, -6) // CHOMPAdd
+	AddElement(/datum/element/footstep, custom_footstep, 1, -6)
 
 /mob/living/carbon/Life()
 	..()
@@ -22,8 +22,6 @@
 	QDEL_NULL(touching)
 	// We don't qdel(bloodstr) because it's the same as qdel(reagents)
 	bloodstr = null
-	QDEL_NULL_LIST(internal_organs)
-	QDEL_NULL_LIST(stomach_contents)
 	return ..()
 
 /mob/living/carbon/rejuvenate()
@@ -36,46 +34,18 @@
 	. = ..()
 	if(src.nutrition && src.stat != 2)
 		adjust_nutrition(-DEFAULT_HUNGER_FACTOR / 10)
-		if(src.m_intent == "run")
+		if(src.m_intent == I_RUN)
 			adjust_nutrition(-DEFAULT_HUNGER_FACTOR / 10)
 
-	if((FAT in src.mutations) && src.m_intent == "run" && src.bodytemperature <= 360)
+	if((FAT in src.mutations) && src.m_intent == I_RUN && src.bodytemperature <= 360)
 		src.bodytemperature += 2
 
 	// Moving around increases germ_level faster
 	if(germ_level < GERM_LEVEL_MOVE_CAP && prob(8))
 		germ_level++
-
-/mob/living/carbon/relaymove(var/mob/living/user, direction)
-	if((user in src.stomach_contents) && istype(user))
-		if(user.last_special <= world.time)
-			user.last_special = world.time + 50
-			src.visible_message(span_danger("You hear something rumbling inside [src]'s stomach..."))
-			var/obj/item/I = user.get_active_hand()
-			if(I && I.force)
-				var/d = rand(round(I.force / 4), I.force)
-				if(istype(src, /mob/living/carbon/human))
-					var/mob/living/carbon/human/H = src
-					var/obj/item/organ/external/organ = H.get_organ(BP_TORSO)
-					if (istype(organ))
-						if(organ.take_damage(d, 0))
-							H.UpdateDamageIcon()
-					H.updatehealth()
-				else
-					src.take_organ_damage(d)
-				user.visible_message(span_danger("[user] attacks [src]'s stomach wall with the [I.name]!"))
-				playsound(user, 'sound/effects/attackblob.ogg', 50, 1)
-
-				if(prob(src.getBruteLoss() - 50))
-					for(var/atom/movable/A in stomach_contents)
-						A.loc = loc
-						stomach_contents.Remove(A)
-					src.gib()
 */
 /mob/living/carbon/gib()
 	for(var/mob/M in src)
-		if(M in src.stomach_contents)
-			src.stomach_contents.Remove(M)
 		M.loc = src.loc
 		for(var/mob/N in viewers(src, null))
 			if(N.client)
@@ -86,9 +56,9 @@
 	if(!istype(M, /mob/living/carbon)) return
 	if (ishuman(M))
 		var/mob/living/carbon/human/H = M
-		var/obj/item/organ/external/temp = H.organs_by_name["r_hand"]
+		var/obj/item/organ/external/temp = H.organs_by_name[BP_R_HAND]
 		if (H.hand)
-			temp = H.organs_by_name["l_hand"]
+			temp = H.organs_by_name[BP_L_HAND]
 		if(temp && !temp.is_usable())
 			to_chat(H, span_warning("You can't use your [temp.name]"))
 			return
@@ -152,17 +122,17 @@
 
 /mob/living/carbon/electrocute_act(var/shock_damage, var/obj/source, var/siemens_coeff = 1.0, var/def_zone = null, var/stun = 1)
 	if(status_flags & GODMODE)	return 0	//godmode
-	if(def_zone == "l_hand" || def_zone == "r_hand") //Diona (And any other potential plant people) hands don't get shocked.
+	if(def_zone == BP_L_HAND || def_zone == BP_R_HAND) //Diona (And any other potential plant people) hands don't get shocked.
 		if(species.flags & IS_PLANT)
 			return 0
 	shock_damage *= siemens_coeff
 	if (shock_damage<1)
 		return 0
 
-	src.apply_damage(0.2 * shock_damage, BURN, def_zone, used_weapon="Electrocution") //shock the target organ
-	src.apply_damage(0.4 * shock_damage, BURN, BP_TORSO, used_weapon="Electrocution") //shock the torso more
-	src.apply_damage(0.2 * shock_damage, BURN, null, used_weapon="Electrocution") //shock a random part!
-	src.apply_damage(0.2 * shock_damage, BURN, null, used_weapon="Electrocution") //shock a random part!
+	src.apply_damage(0.2 * shock_damage, BURN, def_zone) //shock the target organ
+	src.apply_damage(0.4 * shock_damage, BURN, BP_TORSO) //shock the torso more
+	src.apply_damage(0.2 * shock_damage, BURN, null) //shock a random part!
+	src.apply_damage(0.2 * shock_damage, BURN, null) //shock a random part!
 
 	playsound(src, "sparks", 50, 1, -1)
 	if (shock_damage > 15)
@@ -197,7 +167,7 @@
 
 /mob/living/carbon/proc/help_shake_act(mob/living/carbon/M)
 	if (src.health >= CONFIG_GET(number/health_threshold_crit))
-		if(src == M && istype(src, /mob/living/carbon/human))
+		if(src == M && ishuman(src))
 			var/mob/living/carbon/human/H = src
 			var/datum/gender/T = gender_datums[H.get_visible_gender()]
 			src.visible_message( \
@@ -275,7 +245,7 @@
 							src.ExtinguishMob()
 							src.fire_stacks = 0
 		else
-			if (istype(src,/mob/living/carbon/human) && src:w_uniform)
+			if (ishuman(src) && src:w_uniform)
 				var/mob/living/carbon/human/H = src
 				H.w_uniform.add_fingerprint(M)
 
@@ -304,8 +274,8 @@
 						M.adjust_fire_stacks(-1)
 					if(M.on_fire)
 						src.IgniteMob()
-					if(do_after(M, 0.5 SECONDS)) //.5 second delay. Makes it a bit stronger than just typing rest.
-						M.resting = 0 //Hoist yourself up up off the ground. No para/stunned/weakened removal.
+					M.resting = 0 //Hoist yourself up up off the ground. No para/stunned/weakened removal.
+					update_canmove()
 				else if(istype(hugger))
 					hugger.species.hug(hugger,src)
 				else

@@ -1,10 +1,11 @@
 // import { exhaustiveCheck } from 'common/exhaustive';
 
-import { useBackend } from '../../backend';
+import { useBackend } from 'tgui/backend';
+
 // import { CharacterPreferenceWindow } from './CharacterPreferenceWindow';
 import {
   GamePreferencesSelectedPage,
-  PreferencesMenuData,
+  type PreferencesMenuData,
   Window,
 } from './data';
 import { GamePreferenceWindow } from './GamePreferenceWindow';

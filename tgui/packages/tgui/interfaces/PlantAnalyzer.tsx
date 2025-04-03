@@ -1,8 +1,7 @@
-import { BooleanLike } from 'common/react';
-
-import { useBackend } from '../backend';
-import { Box, Button, LabeledList, Section } from '../components';
-import { Window } from '../layouts';
+import { useBackend } from 'tgui/backend';
+import { Window } from 'tgui/layouts';
+import { Box, Button, LabeledList, Section } from 'tgui-core/components';
+import type { BooleanLike } from 'tgui-core/react';
 
 type Data = {
   no_seed: BooleanLike;
@@ -10,7 +9,7 @@ type Data = {
     name: string;
     uid: number;
     endurance: string;
-    yield: string;
+    crop_yield: string;
     maturation_time: string;
     production_time: string;
     potency: string;
@@ -77,7 +76,7 @@ const PlantAnalyzerContent = (props) => {
           {seed.name}#{seed.uid}
         </LabeledList.Item>
         <LabeledList.Item label="Endurance">{seed.endurance}</LabeledList.Item>
-        <LabeledList.Item label="Yield">{seed.yield}</LabeledList.Item>
+        <LabeledList.Item label="Yield">{seed.crop_yield}</LabeledList.Item>
         <LabeledList.Item label="Maturation Time">
           {seed.maturation_time}
         </LabeledList.Item>

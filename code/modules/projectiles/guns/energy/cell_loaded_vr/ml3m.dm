@@ -1,7 +1,7 @@
 // The Gun //
 /obj/item/gun/projectile/cell_loaded/medical
 	name = "cell-loaded medigun"
-	desc = "The ML-3 'Medigun', or ML3M for short, is a powerful cell-based ranged healing device based on the KHI-102b NSFW. \
+	desc = "The ML-3 'Medigun', or ML3M for short, is a powerful cell-based ranged healing device based on the Hephaestus 102b NSFW. \
 	It uses an internal nanite fabricator, powered and controlled by discrete cells, to deliver a variety of effects at range. Up to six combinations of \
 	healing beams can be configured at once, depending on cartridge used. Ammo not included."
 	catalogue_data = list(/datum/category_item/catalogue/information/organization/vey_med)
@@ -15,7 +15,7 @@
 
 /obj/item/gun/projectile/cell_loaded/medical/cmo
 	name = "advanced cell-loaded medigun"
-	desc = "This is a variation on the ML-3 'Medigun', a powerful cell-based ranged healing device based on the KHI-102b NSFW. \
+	desc = "This is a variation on the ML-3 'Medigun', a powerful cell-based ranged healing device based on the Hephaestus 102b NSFW. \
 	It has an extended sight for increased accuracy, and much more comfortable grip. Ammo not included."
 
 	icon_state = "ml3m_cmo"
@@ -50,8 +50,8 @@
 	max_w_class = ITEMSIZE_NORMAL
 	can_hold = list(/obj/item/gun/projectile/cell_loaded/medical,/obj/item/ammo_magazine/cell_mag/medical,/obj/item/ammo_casing/microbattery/medical)
 
-/obj/item/storage/secure/briefcase/ml3m_pack_med/New()
-	..()
+/obj/item/storage/secure/briefcase/ml3m_pack_med/Initialize(mapload)
+	. = ..()
 	new /obj/item/gun/projectile/cell_loaded/medical(src)
 	new /obj/item/ammo_magazine/cell_mag/medical(src)
 	new /obj/item/ammo_casing/microbattery/medical/brute(src)
@@ -66,8 +66,8 @@
 	max_w_class = ITEMSIZE_NORMAL
 	can_hold = list(/obj/item/gun/projectile/cell_loaded/medical,/obj/item/ammo_magazine/cell_mag/medical,/obj/item/ammo_casing/microbattery/medical)
 
-/obj/item/storage/secure/briefcase/ml3m_pack_cmo/New()
-	..()
+/obj/item/storage/secure/briefcase/ml3m_pack_cmo/Initialize(mapload)
+	. = ..()
 	new /obj/item/gun/projectile/cell_loaded/medical/cmo(src)
 	new /obj/item/ammo_magazine/cell_mag/medical(src)
 	new /obj/item/ammo_casing/microbattery/medical/brute(src)

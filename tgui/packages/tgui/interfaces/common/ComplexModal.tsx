@@ -1,18 +1,17 @@
-import { KeyboardEvent } from 'react';
-
-import { useBackend } from '../../backend';
+import type { KeyboardEvent } from 'react';
+import { useBackend } from 'tgui/backend';
+import { Modal } from 'tgui-core/components';
 import {
   Box,
   Button,
   Dropdown,
-  Flex,
   Image,
   Input,
-  Modal,
-} from '../../components';
+  Stack,
+} from 'tgui-core/components';
 
 type Data = { modal: { id: string; args: {}; text: string; type: string } };
-let bodyOverrides = {};
+const bodyOverrides = {};
 
 /**
  * Sends a call to BYOND to open a modal
@@ -106,6 +105,9 @@ export const ComplexModal = (props) => {
 
   const { id, text, type } = modal;
 
+  const modalOnEscape:
+    | ((e: KeyboardEvent<HTMLDivElement>) => void)
+    | undefined = (e) => modalClose(id);
   let modalOnEnter: ((e: KeyboardEvent<HTMLDivElement>) => void) | undefined;
   let modalBody: React.JSX.Element | undefined;
   let modalFooter: React.JSX.Element = (
@@ -174,33 +176,33 @@ export const ComplexModal = (props) => {
     );
   } else if (type === 'bento') {
     modalBody = (
-      <Flex spacingPrecise="1" wrap="wrap" my="0.5rem" maxHeight="1%">
+      <Stack wrap="wrap" my="0.5rem" maxHeight="1%">
         {modal.choices.map((c, i) => (
-          <Flex.Item key={i} flex="1 1 auto">
+          <Stack.Item key={i}>
             <Button
               selected={i + 1 === parseInt(modal.value, 10)}
               onClick={() => modalAnswer(id, (i + 1).toString(), {})}
             >
               <Image src={c} />
             </Button>
-          </Flex.Item>
+          </Stack.Item>
         ))}
-      </Flex>
+      </Stack>
     );
   } else if (type === 'bentospritesheet') {
     modalBody = (
-      <Flex spacingPrecise="1" wrap="wrap" my="0.5rem" maxHeight="1%">
+      <Stack wrap="wrap" my="0.5rem" maxHeight="1%">
         {modal.choices.map((c, i) => (
-          <Flex.Item key={i} flex="1 1 auto">
+          <Stack.Item key={i}>
             <Button
               selected={i + 1 === parseInt(modal.value, 10)}
               onClick={() => modalAnswer(id, (i + 1).toString(), {})}
             >
               <Box className={c} />
             </Button>
-          </Flex.Item>
+          </Stack.Item>
         ))}
-      </Flex>
+      </Stack>
     );
   } else if (type === 'boolean') {
     modalFooter = (
@@ -241,6 +243,7 @@ export const ComplexModal = (props) => {
       maxWidth={props.maxWidth || window.innerWidth / 2 + 'px'}
       maxHeight={props.maxHeight || window.innerHeight / 2 + 'px'}
       onEnter={modalOnEnter}
+      onEscape={modalOnEscape}
       mx="auto"
     >
       <Box inline>{text}</Box>

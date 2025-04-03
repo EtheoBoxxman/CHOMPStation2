@@ -1,13 +1,14 @@
-import { useBackend } from '../../backend';
-import { Button, LabeledList, Section } from '../../components';
-import { Data } from './types';
+import { useBackend } from 'tgui/backend';
+import { Button, LabeledList, Section } from 'tgui-core/components';
+
+import type { Data } from './types';
 
 export const CommunicationsConsoleStatusDisplay = (props) => {
   const { act, data } = useBackend<Data>();
 
   const { stat_display, authenticated } = data;
 
-  let presetButtons = stat_display['presets'].map((pb) => {
+  const presetButtons = stat_display['presets'].map((pb) => {
     return (
       <Button
         key={pb.name}

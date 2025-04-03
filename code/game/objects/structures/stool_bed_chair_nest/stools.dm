@@ -7,8 +7,8 @@ var/global/list/stool_cache = list() //haha stool
 	icon = 'icons/obj/furniture_vr.dmi' //VOREStation Edit - new Icons
 	icon_state = "stool_preview" //set for the map
 	randpixel = 0
-	center_of_mass_x = 0 //CHOMPEdit
-	center_of_mass_y = 0 //CHOMPEdit
+	center_of_mass_x = 0
+	center_of_mass_y = 0
 	force = 10
 	throwforce = 10
 	w_class = ITEMSIZE_HUGE
@@ -33,7 +33,7 @@ var/global/list/stool_cache = list() //haha stool
 	update_icon()
 
 /obj/item/stool/padded/New(var/newloc, var/new_material)
-	..(newloc,"steel",MAT_CARPET) //CHOMPstation edit: New tile material system
+	..(newloc, MAT_STEEL, MAT_CARPET)
 
 /obj/item/stool/update_icon()
 	// Prep icon.
@@ -73,7 +73,7 @@ var/global/list/stool_cache = list() //haha stool
 	update_icon()
 
 /obj/item/stool/attack(mob/M as mob, mob/user as mob)
-	if (prob(5) && istype(M,/mob/living))
+	if (prob(5) && isliving(M))
 		user.visible_message(span_danger("[user] breaks [src] over [M]'s back!"))
 		user.setClickCooldown(user.get_attack_speed())
 		user.do_attack_animation(M)
@@ -125,7 +125,7 @@ var/global/list/stool_cache = list() //haha stool
 			qdel(C)
 			return
 		var/padding_type
-		 //CHOMPstation Start: making carpets different and not just the boring basic red no matter carpet type, consider merging material variables at stack level in future - Jack
+		//CHOMPstation Start: making carpets different and not just the boring basic red no matter carpet type, consider merging material variables at stack level in future - Jack
 		if(istype(W,/obj/item/stack/tile/carpet))
 			var/obj/item/stack/tile/carpet/M = W
 			if(M.material && (M.material.flags & MATERIAL_PADDING))

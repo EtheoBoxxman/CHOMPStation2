@@ -59,7 +59,8 @@
 	force = 0
 	var/net_type = /obj/effect/energy_net
 
-/obj/item/energy_net/dropped()
+/obj/item/energy_net/dropped(mob/user)
+	..()
 	spawn(10)
 		if(src) qdel(src)
 
@@ -100,8 +101,8 @@
 
 	var/escape_time = 8 SECONDS
 
-/obj/effect/energy_net/New()
-	..()
+/obj/effect/energy_net/Initialize(mapload)
+	. = ..()
 	START_PROCESSING(SSobj, src)
 
 /obj/effect/energy_net/Destroy()

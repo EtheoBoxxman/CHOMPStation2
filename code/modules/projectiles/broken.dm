@@ -9,19 +9,18 @@
 
 	var/do_rotation = TRUE
 
-/obj/item/broken_gun/New(var/newloc, var/path)
-	..()
+/obj/item/broken_gun/Initialize(mapload, path)
+	. = ..()
 	if(path)
 		if(!setup_gun(path))
-			qdel(src)
-			return
+			return INITIALIZE_HINT_QDEL
 		setup_repair_needs()
 
-/obj/item/broken_gun/Initialize()
-	. = ..()
-	spawn(30 SECONDS)
-		if(!my_guntype && !QDELETED(src))
-			qdel(src)
+	addtimer(CALLBACK(src, PROC_REF(validate_gun_type)), 30 SECONDS, TIMER_DELETE_ME)
+
+/obj/item/broken_gun/proc/validate_gun_type()
+	if(!my_guntype)
+		qdel(src)
 
 /obj/item/broken_gun/examine(mob/user)
 	. = ..()
@@ -98,34 +97,37 @@
 
 /obj/item/broken_gun/proc/can_repair_with(obj/item/I, mob/user)
 	for(var/path in material_needs)
-		if(ispath(path) && istype(I, path))
-			if(material_needs[path] > 0)
-				if(istype(I, /obj/item/stack))
-					var/obj/item/stack/S = I
-					if(S.can_use(material_needs[path]))
-						return TRUE
-					else
-						to_chat(user, span_notice("You do not have enough [path] to continue repairs."))
-				else
-					return TRUE
-
+		if(!ispath(path) || !istype(I, path))
+			continue
+		if(material_needs[path] <= 0)
+			continue
+		if(istype(I, /obj/item/stack))
+			var/obj/item/stack/S = I
+			if(S.can_use(material_needs[path]))
+				return TRUE
+			else
+				to_chat(user, span_notice("You do not have enough [I] to continue repairs."))
+		else
+			return TRUE
 	return FALSE
 
 /obj/item/broken_gun/proc/repair_with(obj/item/I, mob/user)
 	for(var/path in material_needs)
-		if(ispath(path) && istype(I, path))
-			if(material_needs[path] > 0)
-				if(istype(I, /obj/item/stack))
-					var/obj/item/stack/S = I
-					if(S.can_use(material_needs[path]))
-						S.use(material_needs[path])
-						material_needs[path] = 0
-						to_chat(user, span_notice("You repair some damage on \the [src] with \the [S]."))
-				else
-					material_needs[path] = max(0, material_needs[path] - 1)
-					user.drop_from_inventory(I)
-					to_chat(user, span_notice("You repair some damage on \the [src] with \the [I]."))
-					qdel(I)
+		if(!ispath(path) || !istype(I, path))
+			continue
+		if(material_needs[path] <= 0)
+			continue
+		if(istype(I, /obj/item/stack))
+			var/obj/item/stack/S = I
+			if(S.can_use(material_needs[path]))
+				S.use(material_needs[path])
+				material_needs[path] = 0
+				to_chat(user, span_notice("You repair some damage on \the [src] with \the [S]."))
+		else
+			material_needs[path] = max(0, material_needs[path] - 1)
+			user.drop_from_inventory(I)
+			to_chat(user, span_notice("You repair some damage on \the [src] with \the [I]."))
+			qdel(I)
 
 	check_complete_repair(user)
 

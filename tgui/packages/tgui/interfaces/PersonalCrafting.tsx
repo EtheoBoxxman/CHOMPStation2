@@ -1,21 +1,19 @@
-import { filter } from 'common/collections';
-import { flow } from 'common/fp';
-import { BooleanLike } from 'common/react';
-import { createSearch } from 'common/string';
 import { useState } from 'react';
-
-import { useBackend } from '../backend';
+import { useBackend } from 'tgui/backend';
+import { Window } from 'tgui/layouts';
 import {
   Button,
   Dimmer,
-  Flex,
   Icon,
   Input,
   LabeledList,
   Section,
+  Stack,
   Tabs,
-} from '../components';
-import { Window } from '../layouts';
+} from 'tgui-core/components';
+import { flow } from 'tgui-core/fp';
+import type { BooleanLike } from 'tgui-core/react';
+import { createSearch } from 'tgui-core/string';
 
 type Data = {
   busy: BooleanLike;
@@ -42,10 +40,10 @@ type uiRecipe = Required<recipe & { category: string }>;
 function getUiEntries(crafting_recipes: Record<string, recipe[]>) {
   const categories: uiCategory[] = [];
   const recipes: uiRecipe[] = [];
-  for (let category of Object.keys(crafting_recipes)) {
+  for (const category of Object.keys(crafting_recipes)) {
     const subcategories = crafting_recipes[category];
     if ('has_subcats' in subcategories) {
-      for (let subcategory of Object.keys(subcategories)) {
+      for (const subcategory of Object.keys(subcategories)) {
         if (subcategory === 'has_subcats') {
           continue;
         }
@@ -57,7 +55,7 @@ function getUiEntries(crafting_recipes: Record<string, recipe[]>) {
         });
         // Push recipes
         const _recipes = subcategories[subcategory];
-        for (let recipe of _recipes) {
+        for (const recipe of _recipes) {
           recipes.push({
             ...recipe,
             category: subcategory,
@@ -73,7 +71,7 @@ function getUiEntries(crafting_recipes: Record<string, recipe[]>) {
     });
     // Push recipes
     const _recipes = crafting_recipes[category];
-    for (let recipe of _recipes) {
+    for (const recipe of _recipes) {
       recipes.push({
         ...recipe,
         category,
@@ -97,12 +95,12 @@ export const PersonalCrafting = (props) => {
 
   const shownRecipes: uiRecipe[] = flow([
     (recipes: uiRecipe[]) =>
-      filter(recipes, (recipe) => recipe.category === tab),
+      recipes.filter((recipe) => recipe.category === tab),
     (recipes: uiRecipe[]) => {
       if (!searchText) {
         return recipes;
       } else {
-        return filter(recipes, testSearch);
+        return recipes.filter(testSearch);
       }
     },
   ])(recipes);
@@ -138,11 +136,12 @@ export const PersonalCrafting = (props) => {
           <Input
             fluid
             value={searchText}
+            mb={1}
             placeholder="Search for recipes..."
             onInput={(e, value: string) => setSearchText(value)}
           />
-          <Flex>
-            <Flex.Item>
+          <Stack>
+            <Stack.Item>
               <Tabs vertical>
                 {categories.map((category, i) => (
                   <Tabs.Tab
@@ -160,15 +159,15 @@ export const PersonalCrafting = (props) => {
                   </Tabs.Tab>
                 ))}
               </Tabs>
-            </Flex.Item>
-            <Flex.Item grow={1} basis={0}>
+            </Stack.Item>
+            <Stack.Item grow basis={0}>
               <CraftingList
                 craftables={shownRecipes}
                 display_compact={display_compact}
                 display_craftable_only={display_craftable_only}
               />
-            </Flex.Item>
-          </Flex>
+            </Stack.Item>
+          </Stack>
         </Section>
       </Window.Content>
     </Window>
@@ -219,6 +218,7 @@ const CraftingList = (props: {
     // Full display
     return (
       <Section
+        ml={0}
         key={i}
         title={craftable.name}
         buttons={

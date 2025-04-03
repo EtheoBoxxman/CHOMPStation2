@@ -3,7 +3,7 @@ var/list/admin_verbs_default = list(
 //	/datum/admins/proc/show_player_panel,	//shows an interface for individual players, with various links (links require additional flags, //VOREStation Remove,
 //	/client/proc/player_panel_new, //shows an interface for all players, with links to various panels, //VOREStation Remove,
 //	/client/proc/player_panel,			//VOREStation Remove,
-	/client/proc/deadmin_self,			//destroys our own admin datum so we can play as a regular player,
+	/client/proc/deadmin,			//destroys our own admin datum so we can play as a regular player,
 	/client/proc/cmd_admin_say,			//VOREStation Add,
 	/client/proc/cmd_mod_say,			//VOREStation Add,
 	/client/proc/cmd_event_say,			//VOREStation Add,
@@ -35,7 +35,6 @@ var/list/admin_verbs_admin = list(
 	/datum/admins/proc/announce,		//priority announce something to all clients.,
 	/datum/admins/proc/intercom,		//send a fake intercom message, like an arrivals announcement,
 	/datum/admins/proc/intercom_convo,	//send a fake intercom conversation, like an ATC exchange,
-	/client/proc/colorooc,				//allows us to set a custom colour for everythign we say in ooc,
 	/client/proc/admin_ghost,			//allows us to ghost/reenter body at will,
 	/datum/admins/proc/show_player_panel,	//shows an interface for individual players, with various links (links require additional flags, //VOREStation Add,
 	/client/proc/player_panel_new, //shows an interface for all players, with links to various panels, //VOREStation Add,
@@ -46,8 +45,6 @@ var/list/admin_verbs_admin = list(
 	/client/proc/mark_datum_mapview,	//VOREStation Add,
 	/client/proc/cmd_check_new_players,	//allows us to see every new player, //VOREStation Add,
 	/client/proc/toggle_view_range,		//changes how far we can see,
-	/datum/admins/proc/view_txt_log,	//shows the server log (diary) for today,
-	/datum/admins/proc/view_atk_log,	//shows the server combat-log, doesn't do anything presently,
 	/client/proc/cmd_admin_pm_context,	//right-click adminPM interface,
 	/client/proc/cmd_admin_pm_panel,	//admin-pm list,
 	/client/proc/cmd_admin_subtle_message,	//send an message to somebody as a 'voice in their head',
@@ -56,7 +53,6 @@ var/list/admin_verbs_admin = list(
 	/client/proc/cmd_admin_check_player_logs,	//checks a player's attack logs,
 	/client/proc/cmd_admin_check_dialogue_logs,	//checks a player's dialogue logs,
 	/datum/admins/proc/access_news_network,	//allows access of newscasters,
-	/client/proc/giveruntimelog,		//allows us to give access to runtime logs to somebody,
 	/client/proc/getserverlog,			//allows us to fetch server logs (diary) for other days,
 	/client/proc/jumptocoord,			//we ghost and jump to a coordinate,
 	/client/proc/Getmob,				//teleports a mob to our location,
@@ -99,7 +95,6 @@ var/list/admin_verbs_admin = list(
 	/client/proc/cmd_admin_rejuvenate,
 	/client/proc/toggleghostwriters,
 	/client/proc/toggledrones,
-	/datum/admins/proc/show_skills,
 	/client/proc/check_customitem_activity,
 	/client/proc/man_up,
 	/client/proc/global_man_up,
@@ -130,7 +125,9 @@ var/list/admin_verbs_admin = list(
 	/client/proc/removetickets,
 	/client/proc/delbook,
 	/client/proc/toggle_spawning_with_recolour,
+	/client/proc/modify_shift_end,
 	/client/proc/start_vote,
+	/client/proc/hide_motion_tracker_feedback,
 	/client/proc/reload_jobwhitelist, //ChompADD
 	/client/proc/reload_alienwhitelist //ChompADD
 	)
@@ -188,7 +185,7 @@ var/list/admin_verbs_spawn = list(
 	/datum/admins/proc/check_custom_items,
 	/datum/admins/proc/spawn_plant,
 	/datum/admins/proc/spawn_atom,		//allows us to spawn instances,
-	/datum/admins/proc/spawn_mail,	// CHOMPStation Add
+	/datum/admins/proc/spawn_mail,
 	/client/proc/cmd_admin_droppod_spawn,
 	/client/proc/respawn_character,
 	/client/proc/spawn_character_mob,  //VOREStation Add,
@@ -202,7 +199,8 @@ var/list/admin_verbs_spawn = list(
 	/client/proc/create_gm_message,
 	/client/proc/remove_gm_message,
 	/client/proc/AdminCreateVirus,
-	/client/proc/ReleaseVirus
+	/client/proc/ReleaseVirus,
+	/client/proc/spawn_reagent
 	)
 
 var/list/admin_verbs_server = list(
@@ -236,8 +234,6 @@ var/list/admin_verbs_server = list(
 	)
 
 var/list/admin_verbs_debug = list(
-	/client/proc/reload_configuration, // CHOMPEdit
-	/client/proc/getruntimelog,                     //allows us to access runtime logs to somebody,
 	/client/proc/cmd_admin_list_open_jobs,
 	/client/proc/Debug2,
 	/client/proc/kill_air,
@@ -287,14 +283,19 @@ var/list/admin_verbs_debug = list(
 	/datum/admins/proc/set_uplink, //VOREStation Add,
 	/datum/admins/proc/change_weather,
 	/datum/admins/proc/change_time,
+	/client/proc/cmd_regenerate_asset_cache,
+	/client/proc/cmd_clear_smart_asset_cache,
+	/client/proc/cmd_reload_robot_sprite_test,
 	/client/proc/admin_give_modifier,
 	/client/proc/simple_DPS,
 	/datum/admins/proc/view_feedback,
 	/client/proc/stop_sounds,
+	/client/proc/spawn_reagent,
 	/datum/admins/proc/quick_nif, //CHOMPStation Add,
 	/datum/admins/proc/quick_authentic_nif, //CHOMPStation add
 	/client/proc/reload_jobwhitelist, //ChompADD
-	/client/proc/reload_alienwhitelist //ChompADD
+	/client/proc/reload_alienwhitelist, //ChompADD
+	/client/proc/reload_configuration //CHOMPAdd
 	)
 
 var/list/admin_verbs_paranoid_debug = list(
@@ -316,17 +317,14 @@ var/list/admin_verbs_rejuv = list(
 
 //verbs which can be hidden - needs work
 var/list/admin_verbs_hideable = list(
-	/client/proc/deadmin_self,
+	/client/proc/deadmin,
 //	/client/proc/deadchat,
 	/datum/admins/proc/show_traitor_panel,
 	/datum/admins/proc/toggleenter,
 	/datum/admins/proc/toggleguests,
 	/datum/admins/proc/announce,
-	/client/proc/colorooc,
 	/client/proc/admin_ghost,
 	/client/proc/toggle_view_range,
-	/datum/admins/proc/view_txt_log,
-	/datum/admins/proc/view_atk_log,
 	/client/proc/cmd_admin_subtle_message,
 	/client/proc/cmd_admin_check_contents,
 	/client/proc/cmd_admin_check_player_logs,
@@ -412,10 +410,8 @@ var/list/admin_verbs_mod = list(
 	/client/proc/cmd_event_say,
 	/datum/admins/proc/show_player_info,
 	/datum/admins/proc/show_traitor_panel,
-	/client/proc/colorooc,
 	/client/proc/player_panel_new,
 	/client/proc/dsay,
-	/datum/admins/proc/show_skills,
 	/datum/admins/proc/show_player_panel,
 	/client/proc/check_antagonists,
 	/client/proc/aooc,
@@ -428,8 +424,6 @@ var/list/admin_verbs_mod = list(
 	/datum/admins/proc/sendFax,
 	/client/proc/getserverlog,			//allows us to fetch server logs (diary) for other days,
 	/datum/admins/proc/view_persistent_data,
-	/datum/admins/proc/view_txt_log,	//shows the server log (diary) for today,
-	/datum/admins/proc/view_atk_log,		//shows the server combat-log, doesn't do anything presently,
 	/client/proc/start_vote,
 	/datum/admins/proc/quick_nif, //CHOMPStation Add,
 	/client/proc/reload_jobwhitelist, //ChompADD
@@ -466,6 +460,9 @@ var/list/admin_verbs_event_manager = list(
 	/proc/release,
 	/datum/admins/proc/change_weather,
 	/datum/admins/proc/change_time,
+	/client/proc/cmd_regenerate_asset_cache,
+	/client/proc/cmd_clear_smart_asset_cache,
+	/client/proc/cmd_reload_robot_sprite_test,
 	/client/proc/admin_give_modifier,
 	/client/proc/Jump,
 	/client/proc/jumptomob,
@@ -493,6 +490,9 @@ var/list/admin_verbs_event_manager = list(
 	// /client/proc/show_gm_status,  // VOREStation Edit - We don't use SSgame_master yet.
 	/datum/admins/proc/change_weather,
 	/datum/admins/proc/change_time,
+	/client/proc/cmd_regenerate_asset_cache,
+	/client/proc/cmd_clear_smart_asset_cache,
+	/client/proc/cmd_reload_robot_sprite_test,
 	/client/proc/admin_give_modifier,
 	/datum/admins/proc/cmd_admin_dress,
 	/client/proc/cmd_admin_gib_self,
@@ -506,7 +506,6 @@ var/list/admin_verbs_event_manager = list(
 	/datum/admins/proc/announce,            //priority announce something to all clients.,
 	/datum/admins/proc/intercom,            //send a fake intercom message, like an arrivals announcement,
 	/datum/admins/proc/intercom_convo,      //send a fake intercom conversation, like an ATC exchange,
-	/client/proc/colorooc,                          //allows us to set a custom colour for everythign we say in ooc,
 	/client/proc/admin_ghost,                       //allows us to ghost/reenter body at will,
 	/client/proc/toggle_view_range,         //changes how far we can see,
 	/client/proc/cmd_admin_pm_context,      //right-click adminPM interface,
@@ -547,7 +546,6 @@ var/list/admin_verbs_event_manager = list(
 	/client/proc/cmd_admin_change_custom_event,
 	/client/proc/cmd_admin_rejuvenate,
 	/client/proc/toggleghostwriters,
-	/datum/admins/proc/show_skills,
 	/client/proc/man_up,
 	/client/proc/global_man_up,
 	/client/proc/response_team, // Response Teams admin verb,
@@ -577,9 +575,13 @@ var/list/admin_verbs_event_manager = list(
 	/client/proc/toggle_random_events,
 	/client/proc/modify_server_news,
 	/client/proc/toggle_spawning_with_recolour,
+	/client/proc/modify_shift_end,
 	/client/proc/start_vote,
 	/client/proc/AdminCreateVirus,
 	/client/proc/ReleaseVirus,
+	/client/proc/add_hidden_area,
+	/client/proc/remove_hidden_area,
+	/client/proc/hide_motion_tracker_feedback,
 	/datum/admins/proc/quick_nif, //CHOMPStation Add,
 	/datum/admins/proc/quick_authentic_nif, //CHOMPStation add
 	/client/proc/reload_jobwhitelist, //ChompADD
@@ -588,24 +590,25 @@ var/list/admin_verbs_event_manager = list(
 
 /client/proc/add_admin_verbs()
 	if(holder)
+		var/rights = holder.rank_flags()
 		add_verb(src, admin_verbs_default)
-		if(holder.rights & R_BUILDMODE)		add_verb(src, /client/proc/togglebuildmodeself)
-		if(holder.rights & R_ADMIN)			add_verb(src, admin_verbs_admin)
-		if(holder.rights & R_BAN)			add_verb(src, admin_verbs_ban)
-		if(holder.rights & R_FUN)			add_verb(src, admin_verbs_fun)
-		if(holder.rights & R_SERVER)		add_verb(src, admin_verbs_server)
-		if(holder.rights & R_DEBUG)
+		if(rights & R_BUILDMODE)		add_verb(src, /client/proc/togglebuildmodeself)
+		if(rights & R_ADMIN)			add_verb(src, admin_verbs_admin)
+		if(rights & R_BAN)			add_verb(src, admin_verbs_ban)
+		if(rights & R_FUN)			add_verb(src, admin_verbs_fun)
+		if(rights & R_SERVER)		add_verb(src, admin_verbs_server)
+		if(rights & R_DEBUG)
 			add_verb(src, admin_verbs_debug)
-			if(CONFIG_GET(flag/debugparanoid) && !(holder.rights & R_ADMIN))
+			if(CONFIG_GET(flag/debugparanoid) && !(rights & R_ADMIN))
 				remove_verb(src, admin_verbs_paranoid_debug)			//Right now it's just callproc but we can easily add others later on.
-		if(holder.rights & R_POSSESS)		add_verb(src, admin_verbs_possess)
-		if(holder.rights & R_PERMISSIONS)	add_verb(src, admin_verbs_permissions)
-		if(holder.rights & R_STEALTH)		add_verb(src, /client/proc/stealth)
-		if(holder.rights & R_REJUVINATE)	add_verb(src, admin_verbs_rejuv)
-		if(holder.rights & R_SOUNDS)		add_verb(src, admin_verbs_sounds)
-		if(holder.rights & R_SPAWN)			add_verb(src, admin_verbs_spawn)
-		if(holder.rights & R_MOD)			add_verb(src, admin_verbs_mod)
-		if(holder.rights & R_EVENT)			add_verb(src, admin_verbs_event_manager)
+		if(rights & R_POSSESS)		add_verb(src, admin_verbs_possess)
+		if(rights & R_PERMISSIONS)	add_verb(src, admin_verbs_permissions)
+		if(rights & R_STEALTH)		add_verb(src, /client/proc/stealth)
+		if(rights & R_REJUVINATE)	add_verb(src, admin_verbs_rejuv)
+		if(rights & R_SOUNDS)		add_verb(src, admin_verbs_sounds)
+		if(rights & R_SPAWN)			add_verb(src, admin_verbs_spawn)
+		if(rights & R_MOD)			add_verb(src, admin_verbs_mod)
+		if(rights & R_EVENT)			add_verb(src, admin_verbs_event_manager)
 
 //CHOMPEdit Begin
 /client/proc/remove_admin_verbs()

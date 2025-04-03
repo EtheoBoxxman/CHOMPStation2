@@ -94,10 +94,10 @@ GLOBAL_DATUM_INIT(tickets, /datum/tickets, new)
 	if(!l2b)
 		return
 	var/list/dat = list("<html><head><title>[title]</title></head>")
-	dat += "<A HREF='?_src_=holder;[HrefToken()];ahelp_tickets=[state]'>Refresh</A><br><br>"
+	dat += "<A href='byond://?_src_=holder;[HrefToken()];ahelp_tickets=[state]'>Refresh</A><br><br>"
 	for(var/datum/ticket/T as anything in l2b)
-		dat += span_adminnotice(span_adminhelp("Ticket #[T.id]") + ": <A HREF='?_src_=holder;ahelp=\ref[T];[HrefToken()];ahelp_action=ticket'>[T.initiator_key_name]: [T.name]</A>") + "<br>"
-
+		dat += span_adminnotice(span_adminhelp("Ticket #[T.id]") + ": <A href='byond://?_src_=holder;ahelp=\ref[T];[HrefToken()];ahelp_action=ticket'>[T.initiator_key_name]: [T.name]</A>") + "<br>"
+	dat += "</html>"
 	usr << browse(dat.Join(), "window=ahelp_list[state];size=600x480")
 
 //Tickets statpanel
@@ -175,9 +175,10 @@ GLOBAL_DATUM_INIT(tickets, /datum/tickets, new)
 /obj/effect/statclick/ticket_list
 	var/current_state
 
-/obj/effect/statclick/ticket_list/New(loc, name, state)
+INITIALIZE_IMMEDIATE(/obj/effect/statclick/ticket_list)
+/obj/effect/statclick/ticket_list/Initialize(mapload, name, state)
 	current_state = state
-	..()
+	. = ..()
 
 /obj/effect/statclick/ticket_list/Click()
 	GLOB.tickets.BrowseTickets(current_state)
@@ -341,28 +342,28 @@ GLOBAL_DATUM_INIT(tickets, /datum/tickets, new)
 		ref_src = "\ref[src]"
 
 	if(level == 0)
-		. = " (<A HREF='?_src_=holder;ticket=[ref_src];[HrefToken(TRUE)];ticket_action=reject'>REJT</A>)"
-		. += " (<A HREF='?_src_=holder;ticket=[ref_src];[HrefToken(TRUE)];ticket_action=icissue'>IC</A>)"
-		. += " (<A HREF='?_src_=holder;ticket=[ref_src];[HrefToken(TRUE)];ticket_action=close'>CLOSE</A>)"
-		. += " (<A HREF='?_src_=holder;ticket=[ref_src];[HrefToken(TRUE)];ticket_action=resolve'>RSLVE</A>)"
-		. += " (<A HREF='?_src_=holder;ticket=[ref_src];[HrefToken(TRUE)];ticket_action=handleissue'>HANDLE</A>)"
+		. = " (<A href='byond://?_src_=holder;ticket=[ref_src];[HrefToken(TRUE)];ticket_action=reject'>REJT</A>)"
+		. += " (<A href='byond://?_src_=holder;ticket=[ref_src];[HrefToken(TRUE)];ticket_action=icissue'>IC</A>)"
+		. += " (<A href='byond://?_src_=holder;ticket=[ref_src];[HrefToken(TRUE)];ticket_action=close'>CLOSE</A>)"
+		. += " (<A href='byond://?_src_=holder;ticket=[ref_src];[HrefToken(TRUE)];ticket_action=resolve'>RSLVE</A>)"
+		. += " (<A href='byond://?_src_=holder;ticket=[ref_src];[HrefToken(TRUE)];ticket_action=handleissue'>HANDLE</A>)"
 	else
-		. = " (<A HREF='?_src_=holder;ticket=[ref_src];[HrefToken(TRUE)];ticket_action=resolve'>RSLVE</A>)"
+		. = " (<A href='byond://?_src_=holder;ticket=[ref_src];[HrefToken(TRUE)];ticket_action=resolve'>RSLVE</A>)"
 
 //private
 /datum/ticket/proc/LinkedReplyName(ref_src)
 	if(!ref_src)
 		ref_src = "\ref[src]"
-	return "<A HREF='?_src_=holder;ticket=[ref_src];[HrefToken()];ticket_action=reply'>[initiator_key_name]</A>"
+	return "<A href='byond://?_src_=holder;ticket=[ref_src];[HrefToken()];ticket_action=reply'>[initiator_key_name]</A>"
 
 //private
 /datum/ticket/proc/TicketHref(msg, ref_src, action = "ticket")
 	if(!ref_src)
 		ref_src = "\ref[src]"
-	return "<A HREF='?_src_=holder;ticket=[ref_src];[HrefToken()];ticket_action=[action]'>[msg]</A>"
+	return "<A href='byond://?_src_=holder;ticket=[ref_src];[HrefToken()];ticket_action=[action]'>[msg]</A>"
 
 /*
-	var/chat_msg = span_notice("(<A HREF='?_src_=mentorholder;mhelp=[ref_src];[HrefToken()];mhelp_action=escalate'>ESCALATE</A>) Ticket [TicketHref("#[id]", ref_src)]" + span_bold(": [LinkedReplyName(ref_src)]:") + " [msg]")
+	var/chat_msg = span_notice("(<A href='byond://?_src_=mentorholder;mhelp=[ref_src];[HrefToken()];mhelp_action=escalate'>ESCALATE</A>) Ticket [TicketHref("#[id]", ref_src)]" + span_bold(": [LinkedReplyName(ref_src)]:") + " [msg]")
 	 */
 
 //message from the initiator without a target, all admins will see this
@@ -571,7 +572,7 @@ GLOBAL_DATUM_INIT(tickets, /datum/tickets, new)
 		return
 
 	if(handler == key_name(usr, FALSE, TRUE))
-		to_chat(span_red("You are already handling this ticket."))
+		to_chat(usr, span_red("You are already handling this ticket."))
 		return
 
 	var/msg = span_red("Your AdminHelp is being handled by [key_name(usr,FALSE,FALSE)] please be patient.")
@@ -623,7 +624,7 @@ GLOBAL_DATUM_INIT(tickets, /datum/tickets, new)
 	if(state == AHELP_ACTIVE)
 		. += ClosureLinks(ref_src)
 	if(state != AHELP_RESOLVED)
-		. += " (<A HREF='?_src_=mentorholder;mhelp=[ref_src];mhelp_action=escalate'>ESCALATE</A>)"
+		. += " (<A href='byond://?_src_=mentorholder;mhelp=[ref_src];mhelp_action=escalate'>ESCALATE</A>)"
 
 //Forwarded action from admin/Topic
 /datum/ticket/proc/Action(action)
@@ -657,9 +658,10 @@ GLOBAL_DATUM_INIT(tickets, /datum/tickets, new)
 /obj/effect/statclick/ticket
 	var/datum/ticket/ticket_datum
 
-/obj/effect/statclick/ticket/New(loc, datum/ticket/T)
+INITIALIZE_IMMEDIATE(/obj/effect/statclick/ticket)
+/obj/effect/statclick/ticket/Initialize(mapload, datum/ticket/T)
 	ticket_datum = T
-	..(loc)
+	. = ..()
 
 /obj/effect/statclick/ticket/update()
 	return ..(ticket_datum.name)
@@ -701,7 +703,7 @@ GLOBAL_DATUM_INIT(tickets, /datum/tickets, new)
 	. = list("total" = list(), "noflags" = list(), "afk" = list(), "stealth" = list(), "present" = list())
 	for(var/client/X in GLOB.admins)
 		.["total"] += X
-		if(requiredflags != 0 && !check_rights(rights_required = requiredflags, show_msg = FALSE, C = X))
+		if(requiredflags != 0 && !check_rights_for(X, requiredflags))
 			.["noflags"] += X
 		else if(X.is_afk())
 			.["afk"] += X
@@ -800,7 +802,7 @@ GLOBAL_DATUM_INIT(tickets, /datum/tickets, new)
 							if(found.mind && found.mind.special_role)
 								is_antag = 1
 							founds += "Name: [found.name]([found.real_name]) Ckey: [found.ckey] [is_antag ? "(Antag)" : null] "
-							var/textentry = "(<A HREF='?_src_=holder;[HrefToken()];adminmoreinfo=\ref[found]'>?</A>|<A HREF='?_src_=holder;[HrefToken()];adminplayerobservefollow=\ref[found]'>F</A> "
+							var/textentry = "(<A href='byond://?_src_=holder;[HrefToken()];adminmoreinfo=\ref[found]'>?</A>|<A href='byond://?_src_=holder;[HrefToken()];adminplayerobservefollow=\ref[found]'>F</A> "
 							msg += "[original_word]" + span_small((is_antag ? span_red(textentry) : span_black(textentry)))
 							continue
 		msg += "[original_word] "

@@ -1,22 +1,30 @@
-import { BooleanLike } from 'common/react';
+import { useBackend } from 'tgui/backend';
+import { Button, Image, LabeledList, Stack } from 'tgui-core/components';
+import type { BooleanLike } from 'tgui-core/react';
 
-import { useBackend } from '../../backend';
-import { Button, Flex, Image, LabeledList } from '../../components';
 import { stats } from './constants';
-import { contentData } from './types';
+import type { contentData } from './types';
 
 export const VoreContentsPanel = (props: {
   contents: contentData[];
   belly?: string;
   outside?: BooleanLike;
   show_pictures: BooleanLike;
+  icon_overflow: BooleanLike;
 }) => {
   const { act } = useBackend();
-  const { contents, belly, outside = false, show_pictures } = props;
+
+  const {
+    contents,
+    belly,
+    outside = false,
+    show_pictures,
+    icon_overflow,
+  } = props;
 
   return (
     <>
-      {(outside && (
+      {outside ? (
         <Button
           textAlign="center"
           fluid
@@ -25,12 +33,13 @@ export const VoreContentsPanel = (props: {
         >
           All
         </Button>
-      )) ||
-        null}
-      {(show_pictures && (
-        <Flex wrap="wrap" justify="center" align="center">
+      ) : (
+        ''
+      )}
+      {(show_pictures && !icon_overflow && (
+        <Stack wrap="wrap" justify="center" align="center">
           {contents.map((thing) => (
-            <Flex.Item key={thing.name} basis="33%">
+            <Stack.Item key={thing.name} basis="32%">
               <Button
                 width="64px"
                 color={thing.absorbed ? 'purple' : stats[thing.stat]}
@@ -59,13 +68,13 @@ export const VoreContentsPanel = (props: {
                 />
               </Button>
               {thing.name}
-            </Flex.Item>
+            </Stack.Item>
           ))}
-        </Flex>
+        </Stack>
       )) || (
         <LabeledList>
-          {contents.map((thing) => (
-            <LabeledList.Item key={thing.ref} label={thing.name}>
+          {contents.map((thing, i) => (
+            <LabeledList.Item key={i} label={thing.name}>
               <Button
                 fluid
                 mt={-1}

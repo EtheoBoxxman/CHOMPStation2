@@ -1,11 +1,11 @@
 import { useState } from 'react';
+import { useBackend } from 'tgui/backend';
+import { Window } from 'tgui/layouts';
+import { Box, Button, LabeledList, Section } from 'tgui-core/components';
 
-import { useBackend } from '../../../backend';
-import { Box, Button, LabeledList, Section } from '../../../components';
-import { Window } from '../../../layouts';
 import { CharacterDirectoryList } from './CharacterDirectoryList';
 import { ViewCharacter } from './CharacterDirectoryViewCharacter';
-import { Data, mobEntry } from './types';
+import type { Data, mobEntry } from './types';
 
 export const CharacterDirectory = (props) => {
   const { act, data } = useBackend<Data>();

@@ -6,12 +6,14 @@
 	r_pocket = /obj/item/spacecash/ewallet
 	l_pocket = /obj/item/survivalcapsule/superpose
 
-	l_ear = /obj/item/radio/headset/outsider
-
 	id_slot = slot_wear_id
 	id_type = /obj/item/card/id/external // No access, allows activating PDA's.
 
 	flags = OUTFIT_HAS_BACKPACK|OUTFIT_EXTENDED_SURVIVAL|OUTFIT_COMPREHENSIVE_SURVIVAL
+
+	headset = /obj/item/radio/headset/outsider
+	headset_alt = /obj/item/radio/headset/outsider
+	headset_earbud = /obj/item/radio/headset/outsider
 
 /decl/hierarchy/outfit/noncrew/post_equip(mob/living/carbon/human/H)
 	..()
@@ -49,10 +51,3 @@
 	if(istype(wallet))
 		wallet.owner_name = H.real_name
 		wallet.worth = 1000
-
-/decl/hierarchy/outfit/noncrew/vr_avatar
-	pda_slot = null
-	id_slot = null
-	r_pocket = null
-	l_pocket = null
-	flags = OUTFIT_HAS_BACKPACK

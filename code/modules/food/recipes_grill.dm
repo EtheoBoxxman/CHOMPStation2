@@ -5,6 +5,7 @@
 		/obj/item/reagent_containers/food/snacks/bun
 	)
 	result = /obj/item/reagent_containers/food/snacks/human/burger
+	wiki_flag = WIKI_SPOILER // Alt recipie doesn't need to be shown(breaks tgui)
 
 /datum/recipe/plainburger
 	appliance = GRILL
@@ -21,6 +22,7 @@
 		/obj/item/reagent_containers/food/snacks/meat/syntiflesh
 	)
 	result = /obj/item/reagent_containers/food/snacks/monkeyburger
+	wiki_flag = WIKI_SPOILER // Alt recipie doesn't need to be shown(breaks tgui)
 
 /datum/recipe/brainburger
 	appliance = GRILL
@@ -96,12 +98,13 @@
 
 /datum/recipe/bunbun
 	appliance = GRILL
-	reagents = list("sodiumchloride" = 1)
+	reagents = list(REAGENT_ID_SODIUMCHLORIDE = 1)
 	items = list(
 		/obj/item/reagent_containers/food/snacks/bun,
 		/obj/item/reagent_containers/food/snacks/bun
 	)
 	result = /obj/item/reagent_containers/food/snacks/bunbun
+	wiki_flag = WIKI_SPOILER
 
 /datum/recipe/hotdog
 	appliance = GRILL
@@ -119,6 +122,7 @@
 		/obj/item/reagent_containers/food/snacks/meat/human,
 	)
 	result = /obj/item/reagent_containers/food/snacks/human/kabob
+	wiki_flag = WIKI_SPOILER
 
 /datum/recipe/kabob	//Do not put before humankabob
 	appliance = GRILL
@@ -137,6 +141,7 @@
 		/obj/item/reagent_containers/food/snacks/meat/monkey
 	)
 	result = /obj/item/reagent_containers/food/snacks/monkeykabob
+	wiki_flag = WIKI_SPOILER // Alt recipie doesn't need to be shown(breaks tgui)
 
 /datum/recipe/syntikabob
 	appliance = GRILL
@@ -146,6 +151,7 @@
 		/obj/item/reagent_containers/food/snacks/meat/syntiflesh
 	)
 	result = /obj/item/reagent_containers/food/snacks/monkeykabob
+	wiki_flag = WIKI_SPOILER // Alt recipie doesn't need to be shown(breaks tgui)
 
 /datum/recipe/tofukabob
 	appliance = GRILL
@@ -163,6 +169,7 @@
 		/obj/item/clothing/head/wizard/fake,
 	)
 	result = /obj/item/reagent_containers/food/snacks/spellburger
+	wiki_flag = WIKI_SPOILER
 
 /datum/recipe/spellburger
 	appliance = GRILL
@@ -180,14 +187,14 @@
 		/obj/item/reagent_containers/food/snacks/meat,
 		/obj/item/reagent_containers/food/snacks/meat,
 	)
-	reagents = list("egg" = 3)
+	reagents = list(REAGENT_ID_EGG = 3)
 	reagent_mix = RECIPE_REAGENT_REPLACE
 	result = /obj/item/reagent_containers/food/snacks/bigbiteburger
 
 /datum/recipe/superbiteburger
 	appliance = GRILL
-	fruit = list("tomato" = 1)
-	reagents = list("sodiumchloride" = 5, "blackpepper" = 5)
+	fruit = list(PLANT_TOMATO = 1)
+	reagents = list(REAGENT_ID_SODIUMCHLORIDE = 5, REAGENT_ID_BLACKPEPPER = 5)
 	items = list(
 		/obj/item/reagent_containers/food/snacks/bigbiteburger,
 		/obj/item/reagent_containers/food/snacks/dough,
@@ -199,7 +206,7 @@
 
 /datum/recipe/slimeburger
 	appliance = GRILL
-	reagents = list("slimejelly" = 5)
+	reagents = list(REAGENT_ID_SLIMEJELLY = 5)
 	items = list(
 		/obj/item/reagent_containers/food/snacks/bun
 	)
@@ -207,7 +214,7 @@
 
 /datum/recipe/jellyburger
 	appliance = GRILL
-	reagents = list("cherryjelly" = 5)
+	reagents = list(REAGENT_ID_CHERRYJELLY = 5)
 	items = list(
 		/obj/item/reagent_containers/food/snacks/bun
 	)
@@ -237,34 +244,34 @@
 		/obj/item/reagent_containers/food/snacks/cheesewedge,
 		/obj/item/reagent_containers/food/snacks/cheesewedge,
 	)
-	reagents = list("egg" = 6)
+	reagents = list(REAGENT_ID_EGG = 6)
 	reagent_mix = RECIPE_REAGENT_REPLACE
 	result = /obj/item/reagent_containers/food/snacks/omelette
 
 /datum/recipe/omurice
 	appliance = GRILL
-	reagents = list("rice" = 5, "ketchup" = 5, "egg" = 3)
+	reagents = list(REAGENT_ID_RICE = 5, REAGENT_ID_KETCHUP = 5, REAGENT_ID_EGG = 3)
 	result = /obj/item/reagent_containers/food/snacks/omurice
 
 /datum/recipe/omurice/heart
 	appliance = GRILL
-	reagents = list("rice" = 5, "ketchup" = 5, "sugar" = 5, "egg" = 3)
+	reagents = list(REAGENT_ID_RICE = 5, REAGENT_ID_KETCHUP = 5, REAGENT_ID_SUGAR = 5, REAGENT_ID_EGG = 3)
 	result = /obj/item/reagent_containers/food/snacks/omurice/heart
 
 /datum/recipe/omurice/face
 	appliance = GRILL
-	reagents = list("rice" = 5, "ketchup" = 5, "sodiumchloride" = 1, "egg" = 3)
+	reagents = list(REAGENT_ID_RICE = 5, REAGENT_ID_KETCHUP = 5, REAGENT_ID_SODIUMCHLORIDE = 1, REAGENT_ID_EGG = 3)
 	result = /obj/item/reagent_containers/food/snacks/omurice/face
 
 /datum/recipe/meatsteak
 	appliance = GRILL
-	reagents = list("sodiumchloride" = 1, "blackpepper" = 1)
+	reagents = list(REAGENT_ID_SODIUMCHLORIDE = 1, REAGENT_ID_BLACKPEPPER = 1)
 	items = list(/obj/item/reagent_containers/food/snacks/meat)
 	result = /obj/item/reagent_containers/food/snacks/meatsteak
 
 /datum/recipe/honeytoast
 	appliance = GRILL
-	reagents = list("honey" = 5)
+	reagents = list(REAGENT_ID_HONEY = 5)
 	items = list(
 		/obj/item/reagent_containers/food/snacks/slice/bread
 	)
@@ -281,8 +288,8 @@
 		/obj/item/reagent_containers/food/snacks/carpmeat,
 		/obj/item/reagent_containers/food/snacks/carpmeat
 	)
-	reagents = list("spacespice" = 1)
-	fruit = list("lettuce" = 1, "lime" = 1)
+	reagents = list(REAGENT_ID_SPACESPICE = 1)
+	fruit = list(PLANT_LETTUCE = 1, PLANT_LIME = 1)
 	result = /obj/item/reagent_containers/food/snacks/sliceable/grilled_carp
 
 /datum/recipe/grilledcheese
@@ -308,7 +315,7 @@
 		/obj/item/reagent_containers/food/snacks/slice/bread,
 		/obj/item/reagent_containers/food/snacks/cheesewedge
 	)
-	reagents = list("spacespice" = 1)
+	reagents = list(REAGENT_ID_SPACESPICE = 1)
 	result = /obj/item/reagent_containers/food/snacks/cheesetoast
 	result_quantity = 4
 

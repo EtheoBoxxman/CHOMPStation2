@@ -12,9 +12,6 @@
 /obj/item/robot_parts/set_dir()
 	return
 
-/obj/item/robot_parts/New(var/newloc, var/model)
-	..(newloc)
-
 /obj/item/robot_parts/l_arm
 	name = "cyborg left arm"
 	desc = "A skeletal limb wrapped in pseudomuscles, with a low-conductivity case."
@@ -71,9 +68,9 @@
 	var/obj/item/robot_parts/head/head = null
 	var/created_name = ""
 
-/obj/item/robot_parts/robot_suit/New()
-	..()
-	src.update_icon()
+/obj/item/robot_parts/robot_suit/Initialize(mapload)
+	. = ..()
+	update_icon()
 
 /obj/item/robot_parts/robot_suit/update_icon()
 	cut_overlays()
@@ -234,7 +231,7 @@
 		var/t = sanitizeSafe(tgui_input_text(user, "Enter new robot name", src.name, src.created_name), MAX_NAME_LEN)
 		if (!t)
 			return
-		if (!in_range(src, usr) && src.loc != usr)
+		if (!in_range(src, user) && src.loc != user)
 			return
 
 		src.created_name = t

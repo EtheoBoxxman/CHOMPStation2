@@ -35,7 +35,7 @@
 	C.SetWeakened(0)
 	C.lying = 0
 	C.update_canmove()
-//	C.reagents.add_reagent("toxin", 10)
+//	C.reagents.add_reagent(REAGENT_ID_TOXIN, 10)
 	C.reagents.add_reagent("epinephrine", 20)
 
 	if(src.mind.changeling.recursive_enhancement)
@@ -52,6 +52,7 @@
 	color = "#C8A5DC"
 	metabolism = REM * 2
 	overdose = 5 //This is intentionally low, as we want the ling to take some tox damage, to discourage spamming the ability.
+	wiki_flag = WIKI_SPOILER
 
 /datum/reagent/epinephrine/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
 	if(alien == IS_DIONA)

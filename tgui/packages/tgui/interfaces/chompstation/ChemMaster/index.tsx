@@ -1,15 +1,16 @@
-import { useBackend } from '../../../backend';
-import { Window } from '../../../layouts';
+import { useBackend } from 'tgui/backend';
 import {
   ComplexModal,
   modalRegisterBodyOverride,
-} from '../.././common/ComplexModal';
+} from 'tgui/interfaces/common/ComplexModal';
+import { Window } from 'tgui/layouts';
+
 import { analyzeModalBodyOverride } from './ChemMasterAnalyzeModalBodyOverride';
 import { ChemMasterBeaker } from './ChemMasterBeaker';
 import { ChemMasterBuffer } from './ChemMasterBuffer';
 import { ChemMasterCustomization } from './ChemMasterCustomization';
 import { ChemMasterProduction } from './ChemMasterProduction';
-import { Data } from './types';
+import type { Data } from './types';
 
 export const ChemMaster = (props) => {
   const { data } = useBackend<Data>();

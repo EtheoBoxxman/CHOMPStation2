@@ -1,8 +1,8 @@
-import { decodeHtmlEntities } from 'common/string';
 import { useBackend } from 'tgui/backend';
 import { COLORS } from 'tgui/constants';
 import { Window } from 'tgui/layouts';
 import { Box, Section, Table } from 'tgui-core/components';
+import { decodeHtmlEntities } from 'tgui-core/string';
 
 /*
  * Shared by the following templates (and used individually too)
@@ -43,7 +43,7 @@ export const CrewManifestContent = (props) => {
     return <Box color="average">No Manifest Data</Box>;
   }
 
-  let crew_count = manifest
+  const crew_count = manifest
     .map((val) => val.elems.length)
     .reduce((a, c) => a + c, 0);
   if (!crew_count) {

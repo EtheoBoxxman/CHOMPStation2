@@ -17,7 +17,7 @@
 	. = ..()
 	if(active)
 		. += "It's a holographic warrant for '[active.fields["namewarrant"]]'."
-	if(in_range(user, src) || istype(user, /mob/observer/dead))
+	if(in_range(user, src) || isobserver(user))
 		show_content(user) //Opens a browse window, not chatbox related
 	else
 		. += span_notice("You have to go closer if you want to read it.")
@@ -118,7 +118,7 @@
 	name = "holowarrant devices"
 	desc = "A box of holowarrant displays for security use."
 
-/obj/item/storage/box/holowarrants/New()
-	..()
+/obj/item/storage/box/holowarrants/Initialize(mapload)
+	. = ..()
 	for(var/i = 0 to 3)
 		new /obj/item/holowarrant(src) // VOREStation addition ends

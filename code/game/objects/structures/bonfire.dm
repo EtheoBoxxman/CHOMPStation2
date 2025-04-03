@@ -13,35 +13,35 @@
 	var/set_temperature = T0C + 30	//K
 	var/heating_power = 80000
 
-/obj/structure/bonfire/New(newloc, material_name)
-	..(newloc)
+/obj/structure/bonfire/Initialize(mapload, material_name)
+	. = ..()
 	if(!material_name)
 		material_name = MAT_WOOD
 	material = get_material_by_name("[material_name]")
 	if(!material)
-		qdel(src)
-		return
+		return INITIALIZE_HINT_QDEL
 	color = material.icon_colour
 
 // Blue wood.
-/obj/structure/bonfire/sifwood/New(newloc, material_name)
-	..(newloc, MAT_SIFWOOD)
+/obj/structure/bonfire/sifwood/Initialize(mapload, material_name)
+	. = ..(mapload, MAT_SIFWOOD)
 
-/obj/structure/bonfire/permanent/New(newloc, material_name)
-	..()
+/obj/structure/bonfire/permanent/Initialize(mapload, material_name)
+	. = ..()
 	ignite()
 
-/obj/structure/bonfire/permanent/sifwood/New(newloc, material_name)
-	..(newloc, MAT_SIFWOOD)
+/obj/structure/bonfire/permanent/sifwood/Initialize(mapload, material_name)
+	. = ..(mapload, MAT_SIFWOOD)
 
 //CHOMPStation Addition Start
 /obj/structure/bonfire/examine(mob/user)
+	. = ..()
 	var/X = get_fuel_amount()
-	to_chat(user, "The fire has [X] logs in it.")
+	. += "The fire has [X] logs in it."
 	if(grill)
-		to_chat(user, "[src] has a crude grill plate over it.")
+		. += "[src] has a crude grill plate over it."
 	if(can_buckle)
-		to_chat(user, "[src] has a makeshift stake built in it, perfect for witches and space templars.")
+		. += "[src] has a makeshift stake built in it, perfect for witches and space templars."
 //CHOMPStation Addition end
 
 /obj/structure/bonfire/attackby(obj/item/W, mob/user)
@@ -160,7 +160,7 @@
 
 /obj/structure/bonfire/proc/check_oxygen()
 	var/datum/gas_mixture/G = loc.return_air()
-	if(G.gas["oxygen"] < 1)
+	if(G.gas[GAS_O2] < 1)
 		return FALSE
 	return TRUE
 
@@ -355,7 +355,7 @@
 
 /obj/structure/fireplace/proc/check_oxygen()
 	var/datum/gas_mixture/G = loc.return_air()
-	if(G.gas["oxygen"] < 1)
+	if(G.gas[GAS_O2] < 1)
 		return FALSE
 	return TRUE
 

@@ -26,13 +26,13 @@
 
 	var/emagged = 0		// If you emag the smart mag, you can get the bullets out by clicking it
 
-/obj/item/ammo_magazine/smart/New()
+/obj/item/ammo_magazine/smart/Initialize(mapload)
+	. = ..()
 	START_PROCESSING(SSobj, src)
-	..()
 
 /obj/item/ammo_magazine/smart/Destroy()
 	STOP_PROCESSING(SSobj, src)
-	..()
+	. = ..()
 
 /obj/item/ammo_magazine/smart/process()
 	if(!holding_gun)	// Yes, this is awful, sorry. Don't know a better way to figure out if we've been moved into or out of a gun.
@@ -204,7 +204,7 @@
 	set category = "Object"
 	set src in usr
 
-	if(!istype(src.loc, /mob/living))	// Needs to be in your hands to reset
+	if(!isliving(src.loc))	// Needs to be in your hands to reset
 		return
 
 	var/mob/living/carbon/human/H = usr
@@ -214,10 +214,10 @@
 		return
 
 	if(LAZYLEN(stored_ammo))
-		to_chat(usr, span_warning("You can't reset \the [src] unless it's empty!"))
+		to_chat(H, span_warning("You can't reset \the [src] unless it's empty!"))
 		return
 
-	to_chat(usr, span_notice("You clear \the [src]'s data buffers."))
+	to_chat(H, span_notice("You clear \the [src]'s data buffers."))
 
 	caliber = null
 	ammo_type = null

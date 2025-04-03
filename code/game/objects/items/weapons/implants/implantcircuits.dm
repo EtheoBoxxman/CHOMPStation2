@@ -8,15 +8,15 @@
 /obj/item/implant/integrated_circuit/islegal()
 	return TRUE
 
-/obj/item/implant/integrated_circuit/New()
-	..()
+/obj/item/implant/integrated_circuit/Initialize(mapload)
+	. = ..()
 	IC = new(src)
 	IC.implant = src
 
 /obj/item/implant/integrated_circuit/Destroy()
 	IC.implant = null
 	qdel(IC)
-	..()
+	. = ..()
 
 /obj/item/implant/integrated_circuit/get_data()
 	var/dat = {"
@@ -36,7 +36,8 @@
 	IC.emp_act(severity)
 
 /obj/item/implant/integrated_circuit/examine(mob/user)
-	return IC.examine(user)
+	. = ..()
+	. += IC.examine(user)
 
 /obj/item/implant/integrated_circuit/attackby(var/obj/item/O, var/mob/user)
 	if(O.has_tool_quality(TOOL_CROWBAR) || istype(O, /obj/item/integrated_electronics) || istype(O, /obj/item/integrated_circuit) || O.has_tool_quality(TOOL_SCREWDRIVER) || istype(O, /obj/item/cell/device) )

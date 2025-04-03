@@ -68,7 +68,7 @@
 		to_chat(M, span_notice("You don't feel cool enough to name this gun, chump."))
 		return 0
 
-	var/input = sanitizeSafe(input(usr, "What do you want to name the gun?", ,""), MAX_NAME_LEN)
+	var/input = sanitizeSafe(tgui_input_text(M, "What do you want to name the gun?","Rename Revolver" ,"",MAX_NAME_LEN))
 
 	if(src && input && !M.stat && in_range(M,src))
 		name = input
@@ -96,7 +96,7 @@
 		to_chat(M, span_notice("You don't feel cool enough to name this gun, chump."))
 		return 0
 
-	var/input = sanitizeSafe(input(usr, "What do you want to name the gun?", ,""), MAX_NAME_LEN)
+	var/input = sanitizeSafe(tgui_input_text(M, "What do you want to name the gun?","Rename Revolver" ,"", MAX_NAME_LEN), MAX_NAME_LEN)
 
 	if(src && input && !M.stat && in_range(M,src))
 		name = input
@@ -241,10 +241,10 @@
 	var/list/tertiary_loaded = list()
 
 
-/obj/item/gun/projectile/revolver/lemat/New()
+/obj/item/gun/projectile/revolver/lemat/Initialize(mapload)
+	. = ..()
 	for(var/i in 1 to secondary_max_shells)
 		secondary_loaded += new secondary_ammo_type(src)
-	..()
 
 /obj/item/gun/projectile/revolver/lemat/verb/swap_firingmode()
 	set name = "Swap Firing Mode"

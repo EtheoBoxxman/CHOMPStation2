@@ -88,7 +88,7 @@
 
 		if(!(get_dist(src, attached) <= 1 && isturf(attached.loc)))
 			visible_message("The needle is ripped out of [attached], doesn't that hurt?")
-			attached:apply_damage(3, BRUTE, pick("r_arm", "l_arm"))
+			attached:apply_damage(3, BRUTE, pick(BP_R_ARM, BP_L_ARM))
 			attached = null
 			update_icon()
 			return
@@ -127,7 +127,7 @@
 				return
 
 			// If the human is losing too much blood, beep.
-			if(T.vessel.get_reagent_amount("blood") < T.species.blood_volume*T.species.blood_level_safe)
+			if(T.vessel.get_reagent_amount(REAGENT_ID_BLOOD) < T.species.blood_volume*T.species.blood_level_safe)
 				visible_message("\The [src] beeps loudly.")
 
 			var/datum/reagent/B = T.take_blood(beaker,amount)
@@ -153,7 +153,7 @@
 	set name = "Toggle Mode"
 	set src in view(1)
 
-	if(!istype(usr, /mob/living))
+	if(!isliving(usr))
 		to_chat(usr, span_warning("You can't do that."))
 		return
 

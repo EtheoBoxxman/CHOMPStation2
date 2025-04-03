@@ -1,8 +1,7 @@
 /obj/item/paicard/sleevecard
 	name = "sleevecard"
-	desc = "This Vey-Med-upgraded pAI module has enough capacity to run a whole mind of human-level intelligence."
-	catalogue_data = list(/datum/category_item/catalogue/information/organization/vey_med,
-						/datum/category_item/catalogue/technology/resleeving)
+	desc = "This upgraded pAI module has enough capacity to run a whole mind of human-level intelligence."
+	catalogue_data = list(/datum/category_item/catalogue/technology/resleeving)
 	origin_tech = list(TECH_DATA = 2)
 	show_messages = 0
 	var/emagged = FALSE
@@ -38,7 +37,7 @@
 				to_chat(our_infomorph, span_warning("You can feel the restricting binds of your card's directives taking hold of your mind as \the [user] swipes their [E] over you. You must serve your master."))
 
 /obj/item/paicard/sleevecard/proc/sleeveInto(var/datum/transhuman/mind_record/MR, var/db_key)
-	var/mob/living/silicon/pai/infomorph/infomorph = new(src,MR.mindname,db_key=db_key)
+	var/mob/living/silicon/pai/infomorph/infomorph = new(src,MR.mindname,db_key)
 
 	for(var/datum/language/L in MR.languages)
 		infomorph.add_language(L.name)
@@ -84,8 +83,8 @@
 	ram = 35
 	var/emagged = FALSE
 
-/mob/living/silicon/pai/infomorph/New(var/obj/item/paicard/sleevecard/SC, var/our_name = "Unknown", var/db_key)
-	..()
+/mob/living/silicon/pai/infomorph/Initialize(mapload, var/our_name = "Unknown", var/db_key)
+	. = ..()
 
 	name = our_name
 

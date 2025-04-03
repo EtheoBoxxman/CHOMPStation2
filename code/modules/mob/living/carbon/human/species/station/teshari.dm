@@ -21,7 +21,6 @@
 
 	// CHOMPEdit Start: Species Sounds
 	species_sounds = "Teshari"
-	footstep = FOOTSTEP_MOB_TESHARI // CHOMPEdit
 	// male_cough_sounds = list('sound/effects/mob_effects/tesharicougha.ogg','sound/effects/mob_effects/tesharicoughb.ogg')
 	// female_cough_sounds = list('sound/effects/mob_effects/tesharicougha.ogg','sound/effects/mob_effects/tesharicoughb.ogg')
 	// male_sneeze_sound = 'sound/effects/mob_effects/tesharisneeze.ogg'
@@ -54,13 +53,16 @@
 	slowdown = -1
 	snow_movement = -2	// Ignores light snow
 	item_slowdown_mod = 2	// Tiny birds don't like heavy things
-	total_health = 50
-	brute_mod = 1.35
-	burn_mod =  1.35
+	//CHOMPEdit Start
+	total_health = 75 
+	brute_mod = 1 
+	burn_mod =  1 
+	//CHOMPEdit End
 	mob_size = MOB_SMALL
 	pass_flags = PASSTABLE
 	holder_type = /obj/item/holder/micro //CHOMPEdit from holder/human to holder/micro
-//	short_sighted = 1 CHOMPEdit: We're fine without near-sightedness for now.
+//	short_sighted = 1
+	has_vibration_sense = TRUE
 	gluttonous = 1
 	blood_volume = 400
 	hunger_factor = 0.2
@@ -142,7 +144,7 @@
 		)
 
 	inherent_verbs = list(
-		/mob/living/carbon/human/proc/sonar_ping,
+		///mob/living/carbon/human/proc/sonar_ping,
 		/mob/living/proc/hide
 		)
 
@@ -167,6 +169,8 @@
 		/decl/emote/audible/teshchirp,
 		/decl/emote/audible/teshtrill
 	)
+
+	footstep = FOOTSTEP_MOB_TESHARI
 
 /datum/species/teshari/equip_survival_gear(var/mob/living/carbon/human/H)
 	..()

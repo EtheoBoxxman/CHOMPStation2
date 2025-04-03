@@ -24,23 +24,23 @@
 			slot_r_hand_str = 'icons/mob/items/righthand_melee.dmi',
 			)
 
-/obj/item/melee/energy/sword/green/New()
+/obj/item/melee/energy/sword/green
 	colorable = FALSE
 	lcolor = "#008000"
 
-/obj/item/melee/energy/sword/red/New()
+/obj/item/melee/energy/sword/red
 	colorable = FALSE
 	lcolor = "#FF0000"
 
-/obj/item/melee/energy/sword/blue/New()
+/obj/item/melee/energy/sword/blue
 	colorable = FALSE
 	lcolor = "#0000FF"
 
-/obj/item/melee/energy/sword/purple/New()
+/obj/item/melee/energy/sword/purple
 	colorable = FALSE
 	lcolor = "#800080"
 
-/obj/item/melee/energy/sword/white/New()
+/obj/item/melee/energy/sword/white
 	colorable = FALSE
 	lcolor = "#FFFFFF"
 
@@ -112,7 +112,7 @@
 	else
 		activate(user)
 
-	if(istype(user,/mob/living/carbon/human))
+	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 		H.update_inv_l_hand()
 		H.update_inv_r_hand()
@@ -170,7 +170,7 @@
 	cut_overlays()		//So that it doesn't keep stacking overlays non-stop on top of each other
 	if(active)
 		add_overlay(blade_overlay)
-	if(istype(usr,/mob/living/carbon/human))
+	if(ishuman(usr))
 		var/mob/living/carbon/human/H = usr
 		H.update_inv_l_hand()
 		H.update_inv_r_hand()
@@ -187,11 +187,13 @@
 		to_chat(user, span_warning("You can't do that right now!"))
 		return
 
-	if(tgui_alert(usr, "Are you sure you want to recolor your blade?", "Confirm Recolor", list("Yes", "No")) == "Yes")
-		var/energy_color_input = input(usr,"","Choose Energy Color",lcolor) as color|null
+	if(tgui_alert(user, "Are you sure you want to recolor your blade?", "Confirm Recolor", list("Yes", "No")) == "Yes")
+		var/energy_color_input = tgui_color_picker(user,"","Choose Energy Color",lcolor)
 		if(energy_color_input)
 			lcolor = sanitize_hexcolor(energy_color_input)
 		update_icon()
+		if(active)
+			set_light(lrange, lpower, lcolor)
 
 /obj/item/melee/energy/examine(mob/user)
 	. = ..()
@@ -248,8 +250,8 @@
 	use_cell = TRUE
 	hitcost = 120
 
-/obj/item/melee/energy/axe/charge/loaded/New()
-	..()
+/obj/item/melee/energy/axe/charge/loaded/Initialize(mapload)
+	. = ..()
 	bcell = new/obj/item/cell/device/weapon(src)
 
 /*
@@ -279,7 +281,7 @@
 
 	projectile_parry_chance = 65
 
-/obj/item/melee/energy/sword/dropped(var/mob/user)
+/obj/item/melee/energy/sword/dropped(mob/user)
 	..()
 	if(!istype(loc,/mob))
 		deactivate(user)
@@ -408,8 +410,8 @@
 
 	hitcost = 75
 
-/obj/item/melee/energy/sword/charge/loaded/New()
-	..()
+/obj/item/melee/energy/sword/charge/loaded/Initialize(mapload)
+	. = ..()
 	bcell = new/obj/item/cell/device/weapon(src)
 
 //Energy Blade (ninja uses this)
@@ -436,8 +438,8 @@
 	projectile_parry_chance = 60
 	lcolor = "#00FF00"
 
-/obj/item/melee/energy/blade/New()
-
+/obj/item/melee/energy/blade/Initialize(mapload)
+	. = ..()
 	spark_system = new /datum/effect/effect/system/spark_spread()
 	spark_system.set_up(5, 0, src)
 	spark_system.attach(src)
@@ -447,19 +449,20 @@
 
 /obj/item/melee/energy/blade/Destroy()
 	STOP_PROCESSING(SSobj, src)
-	..()
+	. = ..()
 
 /obj/item/melee/energy/blade/attack_self(mob/user as mob)
 	user.drop_from_inventory(src)
-	spawn(1) if(src) qdel(src)
+	QDEL_IN(src, 1)
 
-/obj/item/melee/energy/blade/dropped()
-	spawn(1) if(src) qdel(src)
+/obj/item/melee/energy/blade/dropped(mob/user)
+	..()
+	QDEL_IN(src, 1)
 
 /obj/item/melee/energy/blade/process()
 	if(!creator || loc != creator || !creator.item_is_in_hands(src))
 		// Tidy up a bit.
-		if(istype(loc,/mob/living))
+		if(isliving(loc))
 			var/mob/living/carbon/human/host = loc
 			if(istype(host))
 				for(var/obj/item/organ/external/organ in host.organs)
@@ -469,7 +472,7 @@
 			host.pinned -= src
 			host.embedded -= src
 			host.drop_from_inventory(src)
-		spawn(1) if(src) qdel(src)
+		QDEL_IN(src, 1)
 
 /obj/item/melee/energy/blade/handle_shield(mob/user, var/damage, atom/damage_source = null, mob/attacker = null, var/def_zone = null, var/attack_text = "the attack")
 	if(default_parry_check(user, attacker, damage_source) && prob(60))
